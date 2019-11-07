@@ -1,0 +1,81 @@
+# baseURI: http://schema.org/sp
+# imports: http://spinrdf.org/spl
+
+@prefix arg: <http://spinrdf.org/arg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://schema.org/sp>
+  rdf:type owl:Ontology ;
+  owl:imports <http://spinrdf.org/spl> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+arg:movieName
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:producerName
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+spin:constructProducer
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "p" ;
+              ] ;
+            sp:predicate <http://schema.org#producer> ;
+            sp:subject [
+                sp:varName "m" ;
+              ] ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object <http://schema.org#Movie> ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "m" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "movieName" ;
+              ] ;
+            sp:predicate <http://schema.org#name> ;
+            sp:subject [
+                sp:varName "name" ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                sp:varName "producerName" ;
+              ] ;
+            sp:variable [
+                sp:varName "p" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:movieName ;
+      spl:valueType xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:producerName ;
+      spl:valueType xsd:string ;
+    ] ;
+  rdfs:label "construct producer" ;
+  rdfs:subClassOf spin:Functions ;
+.

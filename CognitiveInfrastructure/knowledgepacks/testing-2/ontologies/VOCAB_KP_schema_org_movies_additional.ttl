@@ -1,0 +1,28 @@
+# baseURI: http://schema.org/vocab
+@prefix schema: <http://schema.org/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix dct: <http://purl.org/dc/terms/>.
+
+
+<http://www.imdb.com/title/tt0084726/> a schema:Movie;
+	schema:name "Star Trek II: The Wrath of Khan";
+	schema:countryOfOrigin "USA";
+	schema:director "Nicholas Meyer";
+	schema:actor "William Shatner";
+	schema:actor "Leonard Nimoy";
+	schema:trailer <http://www.imdb.com/video/imdb/vi1234417433?playlistId=tt0084726&ref_=tt_ov_vi>;
+	.
+	
+<http://www.imdb.com/title/tt0098382/> a schema:Movie;
+	schema:name "Star Trek V: The Final Frontier";
+	schema:countryOfOrigin "USA";
+	schema:director "William Shatner";
+	schema:actor "William Shatner";
+	schema:actor "Leonard Nimoy";
+	schema:trailer <http://www.imdb.com/title/tt0098382/videogallery?ref_=tt_pv_vi_sm>;
+	.
+	

@@ -1,0 +1,18 @@
+PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+INSERT DATA
+{ 
+	<http://www.imdb.com/title/tt0092007/> a schema:Movie;
+	schema:name "Star Trek IV: The Voyage Home";
+	schema:countryOfOrigin "USA";
+	schema:director "Leonard Nimoy";
+	schema:actor "William Shatner";
+	schema:actor "Leonard Nimoy";
+	.
+}

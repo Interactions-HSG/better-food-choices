@@ -1,0 +1,61 @@
+@prefix schema: <http://schema.org/>.
+@prefix db: <https://interactions.ics.unisg.ch/ontologies/dominicbruegger/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+db:Nutrient a rdfs:Class;
+    rdfs:label "Nutrient"@en;
+    rdfs:comment ""@en;
+    rdfs:subClassOf schema:Product;
+    rdfs:isDefinedBy <https://interactions.ics.unisg.ch/ontologies/dominicbruegger/Nutrient>;
+    .
+db:major-category a rdf:Property;
+    rdfs:label "Major-Category"@en;
+    rdfs:comment "The first out of two categories used by ETH data base"@en;
+    rdfs:domain schema:Product;
+    rdfs:range xsd:integer;
+    rdfs:isDefinedBy <http://schema.org/Product>;
+    .
+db:minor-category a rdf:Property;
+    rdfs:label "Minor-Category"@en;
+    rdfs:comment "The second out of two categories used by ETH data base"@en;
+    rdfs:domain schema:Product;
+    rdfs:range xsd:integer;
+    rdfs:isDefinedBy <http://schema.org/Product>;
+    .
+db:nutriscore a rdf:Property;
+    rdfs:label "Nutriscore"@en;
+    rdfs:comment "A health rating mechanism based on nutritional values"@en;
+    rdfs:domain schema:Product;
+    rdfs:range xsd:string;
+    rdfs:isDefinedBy <http://schema.org/Product>;
+	.
+db:nutrientAmount a rdf:Property;
+    rdfs:label "Nutrient-Amount"@en;
+    rdfs:comment "The amount of one nutrient per 100g"@en;
+    rdfs:domain db:Nutrient;
+    rdfs:range xsd:double;
+    rdfs:isDefinedBy <https://interactions.ics.unisg.ch/ontologies/dominicbruegger/Nutrient>;
+    .
+db:nutrientName a rdf:Property;
+    rdfs:label "Nutrient-Name"@en;
+    rdfs:comment "The name of a nutrient"@en;
+    rdfs:domain db:Nutrient;
+    rdfs:range xsd:string;
+    rdfs:isDefinedBy <https://interactions.ics.unisg.ch/ontologies/dominicbruegger/Nutrient>;
+    .
+db:nutrientUnitOfMeasure a rdf:Property;
+    rdfs:label "Nutrient-Unit-of-Measure"@en;
+    rdfs:comment "The unit of measure of the nutrient"@en;
+    rdfs:domain db:Nutrient;
+    rdfs:range xsd:string;
+    rdfs:isDefinedBy <https://interactions.ics.unisg.ch/ontologies/dominicbruegger/Nutrient>;
+    .
+db:healthPercentage a rdf:Property;
+    rdfs:label "Health-Percentage"@en;
+    rdfs:comment "The percentage of fruit/vegetable in a product"@en;
+    rdfs:domain schema:Product;
+    rdfs:range xsd:double;
+    rdfs:isDefinedBy <http://schema.org/Product>;
+    .

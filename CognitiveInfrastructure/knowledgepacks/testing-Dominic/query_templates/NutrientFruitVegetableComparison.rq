@@ -1,0 +1,11 @@
+PREFIX schema: <http://schema.org/>
+PREFIX db: <https://interactions.ics.unisg.ch/ontologies/dominicbruegger/>
+
+SELECT ?gtin ?pname ?diff
+WHERE {
+	_:bn schema:gtin13 ?gtin ;
+		schema:name ?pname ;
+		db:healthPercentage ?health .
+	BIND (?health-?filt AS ?diff) .
+	FILTER (?health > ?filt) .
+}

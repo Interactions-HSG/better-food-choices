@@ -1,0 +1,42 @@
+@prefix schema: <http://schema.org/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix app: <http://siemens.com/schemas/application#> .
+@prefix dr: <http://siemens.com/schema/dr#> .
+@prefix fonm: <http://fonm.org/schema/fonm#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qudt: <http://qudt.org/schema/qudt#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sg: <http://siemens.com/schema/sg#> .
+@prefix sgspin: <http://siemens.com/spin/SPIN_SSF-smartgrid-v1.0#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix ssf: <http://siemens.com/schemas/ssf#> .
+@prefix ssg: <http://siemens.com/spin/sg#> .
+@prefix ssn: <http://purl.oclc.org/NET/ssnx/ssn#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix movieRating: <http://spinrdf.org/movieRating#> .
+
+<http://www.imdb.com/title/tt0116629/> a schema:Movie;
+	schema:name "Independence Day";
+	schema:countryOfOrigin "USA";
+	schema:director "Barry Sonnenfeld";
+	schema:actor "Will Smith";
+	schema:actor "Jeff Goldblum";
+	schema:trailer <http://www.imdb.com/video/imdb/vi2181957401?playlistId=tt0116629&ref_=tt_ov_vi>;
+	.
+
+<http://www.imdb.com/title/tt0120591/> a schema:Movie;
+	schema:name "Armageddon";
+	schema:countryOfOrigin "USA";
+	schema:director "Michael Bay";
+	schema:actor "Bruce Willis";
+	schema:trailer <http://www.imdb.com/video/imdb/vi2162688281?playlistId=tt0120591&ref_=tt_ov_vi>;
+	.

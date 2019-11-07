@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+    "name": "Nutri-Score Calculator",
+    "version": "1.0",
+    "description": "Calculates the Nutri-Score with the help of nutritional information on PdPs",
+    "permissions": ["tabs", "activeTab", "storage"],
+    "icons": {
+        "128": "ns_128.png" },
+    "content_scripts": [
+        {
+            "matches": ["http://produkte.migros.ch/*", "https://produkte.migros.ch/*", "http://search.migros.ch/de/q:*/", "https://search.migros.ch/de/q:*/"],
+            "js": ["jquery.min.js", "content.js"]
+        }
+    ],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "web_accessible_resources": ["nsA.png", "nsB.png", "nsC.png", "nsD.png", "nsE.png", "nsV.png"],
+    "browser_action": {
+        "default_icon": "ns_32.png",
+        "default_title": "Look for product alternatives!"
+    }
+}

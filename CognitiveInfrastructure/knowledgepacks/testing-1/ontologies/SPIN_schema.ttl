@@ -1,0 +1,65 @@
+# baseURI: http://schema.org
+# imports: http://spinrdf.org/spl
+# prefix: schema
+
+@prefix arg: <http://spinrdf.org/arg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://schema.org>
+  rdf:type owl:Ontology ;
+  owl:imports <http://spinrdf.org/spl> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+schema:query
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "country" ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "name" ;
+              ] ;
+            sp:predicate schema:name ;
+            sp:subject [
+                sp:varName "movie" ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "country" ;
+              ] ;
+            sp:predicate schema:countryOfOrigin ;
+            sp:subject [
+                sp:varName "x" ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:name ;
+      spl:valueType xsd:string ;
+    ] ;
+  rdfs:label "query" ;
+  rdfs:subClassOf spin:Functions ;
+.
+arg:country
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:name
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.

@@ -1,0 +1,14 @@
+PREFIX schema: <http://schema.org/>
+PREFIX db: <https://interactions.ics.unisg.ch/ontologies/dominicbruegger/>
+
+SELECT ?gtin ?pname ?diff
+WHERE {
+	_:bn schema:gtin13 ?gtin ;
+		schema:name ?pname ;
+		db:Nutrient ?nutrients .
+	?nutrients db:nutrientName ?nname .
+	?nutrients db:nutrientAmount ?namount .
+	BIND (?filt-?namount AS ?diff) .
+	FILTER (?nname = "sugars") .
+	FILTER (?namount < ?filt) .
+}

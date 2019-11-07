@@ -1,0 +1,11 @@
+PREFIX schema: <http://schema.org/>
+PREFIX db: <https://interactions.ics.unisg.ch/ontologies/dominicbruegger/>
+
+SELECT *
+WHERE {
+	_:bn schema:gtin13 ?gtin ;
+		schema:name ?pname ;
+		db:nutriscore ?score .
+	FILTER (?score < "D") .
+}
+ORDER BY ASC(?score)
