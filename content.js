@@ -1,4 +1,4 @@
-// Checking if running properly.
+// Checking if Extension running properly.
 console.log("Chrome extension is working!");
 
 
@@ -37,7 +37,7 @@ for (let i = 0; i < categorizationTable.length; i++) {
 categorization = categorizationTxt.toLowerCase();
 
 
-// Checking if it is food or a drink.
+// Checking if product is food or a drink.
 var food;
 if (categorization.indexOf("getränke heiss & kalt") >= 0) {
     food = false;
@@ -47,7 +47,7 @@ if (categorization.indexOf("getränke heiss & kalt") >= 0) {
 console.log("The object is food: " + food);
 
 
-// Checking if it is mineral water.
+// Checking if product is mineral water.
 var water;
 if (categorization.indexOf("mineralwasser") >= 0) {
     water = true;
@@ -57,7 +57,7 @@ if (categorization.indexOf("mineralwasser") >= 0) {
 console.log("The object is mineral water: " + water);
 
 
-// Checking if it belongs to the yoghurt category.
+// Checking if product belongs to the yoghurt category.
 var categoryCheck;
 if (categorization.indexOf("joghurt & joghurtdrinks") >= 0) {
     categoryCheck = true;
@@ -82,23 +82,25 @@ function productDataCallback(json)
     if (json["products"] == null) {
         console.log("The product is not availabe in the database.");      
     } else {
-        console.log("Product data is available in API.");
+        console.log("Product data is available in the database.");
         // console.log(json["products"][0].nutri_score_final);
 
            return json["products"][0].nutri_score_final;
     }
 };
 
-//function to display nutri-score when the page starts
+//function to display the Nutri-score when the page starts
 loadProductData(productDataCallback);
 
 // Function to check if nutritional data is available and fetch it.
+// The local Nutriscore-calculation is done within this statement.
 // These variables are defined globally, because they are needed later on.
-//nutri final score def
 var nutriScore;
 var queryname ;
 var finalResultSet;
-//function to return nutrisocre 
+
+//function to return the Nutri-score 
+
 function show(_nutri_score_final){
     nutriScore = _nutri_score_final;
     console.log(nutriScore);
@@ -110,13 +112,36 @@ function show(_nutri_score_final){
     nsEURL = chrome.runtime.getURL("nsE.png");
     nsVURL = chrome.runtime.getURL("nsV.png");
 
+
+    // Choose Current= 'EUR' Or 'CHF' depending on the CH/Germany Users. Data to be extracted from API later.
+
+
     var div = document.createElement("DIV");
     div.id = "imageHolder";
     div.style.padding = "5px 10px 20px 0px";
-
     var position = document.getElementById("info");
+    var current = "CHF";
+    var currency = document.getElementsByClassName("current-price")[0];
+    
+ 
+    //Removal of Migros Extra content (Cumulus Ratings/Product Referrals/Comments) for the Study;
 
+    document.getElementsByClassName("widget-ratings clearfix")[0].remove();
+    document.getElementsByClassName("sidebar-product-information sidebar-product-availability")[0].remove();
+    document.getElementsByClassName("sidebar-product-information sidebar-retailer")[0].remove();
+    document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item")[0].remove();
+    document.getElementsByClassName("mui-panel panel-border-top")[0].remove();
+    document.getElementsByClassName("section-bottom-md-padding")[0].remove();
+    document.getElementsByClassName("section-bottom-padding bg-wooden")[0].remove();
+    document.getElementsByClassName("community-tabs-container bg-wooden")[0].remove();
+    document.getElementsByClassName("section-bottom-padding bg-wooden")[0].remove();
+    document.getElementsByClassName("container section-bottom-padding")[0].remove();
+    document.getElementsByClassName("section-bottom-padding bg-light js-related-products")[0].remove();
+    document.getElementsByClassName("section-bottom-padding last-seen-products js-last-seen-products")[0].remove();
     var img = document.createElement("IMG");
+
+    //Addition of the Nutri-score Image;
+
     if (nutriScore === "A") {
         img.src = nsAURL;
         queryname = "NutriscoreA"
@@ -143,33 +168,40 @@ function show(_nutri_score_final){
     img.setAttribute("href", "https://world.openfoodfacts.org/nutriscore");
 
     console.log("Nutri-Score image added!");
+
+
+    // Function Displaying Product price currency and adjustement depending on CH/Germany Users.
+
     div.appendChild(img);
     var title = document.createElement("TEXT");
-    title.textContent = "HEALTHIER ALTERNATIVES BY";
-    title.style.fontSize = "14px";
-    title.style.display = 'block';
+    title.textContent = Math.round(currency.innerText/1.7*20)/20;
+    title.style.fontSize = "20px";
     title.style.color = "gray";
     title.style.fontWeight="bold";
-    title.style.display = "block";
-    title.style.textAlign="center"
-    var title1 = document.createElement("TEXT");
-    title1.textContent = "NUTRI-SCORE";
-    title1.style.fontSize = "14px";
-    title1.style.display = 'block';
-    title1.style.color = "gray";
-    title1.style.fontWeight="bold";
-    title1.style.display = "block";
-    title1.style.textAlign="center"
+ 
 
+    var currency_eu = document.createElement("TEXT");
+    currency_eu.textContent = "EUR" ;
+    currency_eu.style.fontSize = "16px";
+    currency_eu.float="right";
+    currency_eu.style.color = "gray";
+    currency_eu.style.fontWeight="bold";
 
-    div.appendChild(title);
-    div.appendChild(title1);
-
+    
+    if (current=="EUR") {
+        currency.innerHTML=title.innerText;
+    }
+    else{
+        currency_eu.textContent="CHF";
+    }
+    currency.append(currency_eu);
     position.insertBefore(div, position.childNodes[0]);
-    loadQueryResults(queryname, queryResultsCallback);
+
+  //  loadQueryResults(queryname, queryResultsCallback);
 
 }
-//Function Extracting Score from API
+  //Function requesting Nutri-score from API and calculating Nutri-score locally if does not work.
+
 function loadProductData(callback) {
     $.ajax({
         url: url,
@@ -187,16 +219,435 @@ function loadProductData(callback) {
                  show(nutri_score_final)
             }
         },
-        error: function(textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
+         // Function calculating the Nutri-score Locally.
+         error: function() {
+            var nutriScore;
+            var acids;
+            var energy;
+            var sugar;
+            var fibers;
+            var protein;
+            var sodium;
+
+            var nutrientTable = document.getElementById("nutrient-table");
+            if(nutrientTable != null) {
+                var nutrientColumns = nutrientTable.getElementsByTagName("td");
+
+                // Fetching nutritional data from HTML of website.
+
+                for (let i = 0; i < nutrientColumns.length; i++) {
+                    if (nutrientColumns[i].innerText === "Energie") {
+                        var energyTxt = nutrientColumns[i+1].innerText;
+                        break;
+                    } else {
+                        var energyTxt = "0";
+                    }
+                }
+                if (energyTxt.indexOf("<") !== -1) {
+                    energy = 0;
+                } else {
+                    energy = parseFloat(energyTxt);
+                }
+                console.log("Energy (kJ): " + energy);
+
+                for (let i = 0; i < nutrientColumns.length; i++) {
+                    if (nutrientColumns[i].innerText === "davon gesättigte Fettsäuren") {
+                        var acidsTxt = nutrientColumns[i+1].innerText;
+                        break;
+                    } else {
+                        var acidsTxt = "0";
+                    }
+                }
+                if (acidsTxt.indexOf("<") !== -1) {
+                    acids = 0;
+                } else {
+                    acids = parseFloat(acidsTxt);
+                }
+                console.log("Saturated fatty acids (g): " + acids);
+
+                for (let i = 0; i < nutrientColumns.length; i++) {
+                    if (nutrientColumns[i].innerText === "davon Zucker") {
+                        var sugarTxt = nutrientColumns[i+1].innerText;
+                        break;
+                    } else {
+                        var sugarTxt = "0";
+                    }
+                }
+                if (sugarTxt.indexOf("<") !== -1) {
+                    sugar = 0;
+                } else {
+                    sugar = parseFloat(sugarTxt);
+                }
+                console.log("Sugar (g): " + sugar);
+
+                for (let i = 0; i < nutrientColumns.length; i++) {
+                    if (nutrientColumns[i].innerText === "Ballaststoffe") {
+                        var fibersTxt = nutrientColumns[i+1].innerText;
+                        break;
+                    } else {
+                        var fibersTxt = "0";
+                    }
+                }
+                if (fibersTxt.indexOf("<") !== -1) {
+                    fibers = 0;
+                } else {
+                    fibers = parseFloat(fibersTxt);
+                }
+                console.log("Fibers (g): " + fibers);
+
+                for (let i = 0; i < nutrientColumns.length; i++) {
+                    if (nutrientColumns[i].innerText === "Eiweiss") {
+                        var proteinTxt = nutrientColumns[i+1].innerText;
+                        break;
+                    } else {
+                        var proteinTxt = "0";
+                    }
+                }
+                if (proteinTxt.indexOf("<") !== -1) {
+                    protein = 0;
+                } else {
+                    protein = parseFloat(proteinTxt);
+                }
+                console.log("Protein (g): " + protein);
+
+                for (let i = 0; i < nutrientColumns.length; i++) {
+                    if (nutrientColumns[i].innerText === "Salz") {
+                        var sodiumTxt = nutrientColumns[i+1].innerText;
+                        break;
+                    } else {
+                        var sodiumTxt = "0";
+                    }
+                }
+
+                for (let i = 0; i < nutrientColumns.length; i++) {
+                    if (nutrientColumns[i].innerText === "Natrium") {
+                        var natriumTxt = nutrientColumns[i+1].innerText;
+                        break;
+                    } else {
+                        var natriumTxt = "0";
+                    }
+                }
+                let sodiumMG;
+                if (sodiumTxt.indexOf("<") !== -1) {
+                    sodiumMG = 0;
+                } else {
+                    let sodiumInG = parseFloat(sodiumTxt).toFixed(3);
+                    sodiumMG = sodiumInG*400;
+                }
+
+                let natriumMG;
+                if (natriumTxt.indexOf("<") !== -1) {
+                    natriumMG = 0;
+                } else {
+                    let natriumInG = parseFloat(natriumTxt).toFixed(3);
+                    natriumMG = natriumInG*1000
+                }
+
+                // Choosing Sodium or Natrium data, depeding on availability.
+
+                if (sodiumMG > natriumMG) {
+                    sodium = sodiumMG;
+                } else if (sodiumMG = natriumMG) {
+                    sodium = sodiumMG;
+                } else {
+                    sodium = natriumMG;
+                }
+
+                console.log("Sodium (mg): " + sodium);
+
+                let fruitvegetables = 0;
+
+                // Code for calculation of NutriScore based.
+                // on the recognized values on the website.
+
+                let energyScore;
+
+                if (food === true) {
+                    if (energy <= 335) {
+                        energyScore = 0;
+                    } else if (energy <= 670) {
+                        energyScore = 1;
+                    } else if (energy <= 1005) {
+                        energyScore = 2;
+                    } else if (energy <= 1340) {
+                        energyScore = 3;
+                    } else if (energy <= 1675) {
+                        energyScore = 4;
+                    } else if (energy <= 2010) {
+                        energyScore = 5;
+                    } else if (energy <= 2345) {
+                        energyScore = 6;
+                    } else if (energy <= 2680) {
+                        energyScore = 7;
+                    } else if (energy <= 3015) {
+                        energyScore = 8;
+                    } else if (energy <= 3350) {
+                        energyScore = 9;
+                    } else {
+                        energyScore = 10;
+                    };
+                } else if (food === false) {
+                    if (energy <= 0) {
+                        energyScore = 0;
+                    } else if (energy <= 30) {
+                        energyScore = 1;
+                    } else if (energy <= 60) {
+                        energyScore = 2;
+                    } else if (energy <= 90) {
+                        energyScore = 3;
+                    } else if (energy <= 120) {
+                        energyScore = 4;
+                    } else if (energy <= 150) {
+                        energyScore = 5;
+                    } else if (energy <= 180) {
+                        energyScore = 6;
+                    } else if (energy <= 210) {
+                        energyScore = 7;
+                    } else if (energy <= 240) {
+                        energyScore = 8;
+                    } else if (energy <= 270) {
+                        energyScore = 9;
+                    } else {
+                        energyScore = 10;
+                    }
+                }
+
+                let acidsScore;
+
+                if (food === true) {
+                    if (acids <= 1) {
+                        acidsScore = 0;
+                    } else if (acids <= 2) {
+                        acidsScore = 1;
+                    } else if (acids <= 3) {
+                        acidsScore = 2;
+                    } else if (acids <= 4) {
+                        acidsScore = 3;
+                    } else if (acids <= 5) {
+                        acidsScore = 4;
+                    } else if (acids <= 6) {
+                        acidsScore = 5;
+                    } else if (acids <= 7) {
+                        acidsScore = 6;
+                    } else if (acids <= 8) {
+                        acidsScore = 7;
+                    } else if (acids <= 9) {
+                        acidsScore = 8;
+                    } else if (acids <= 10) {
+                        acidsScore = 9;
+                    } else {
+                        acidsScore = 10;
+                    };
+                } else if (food === false) {
+                    acidsScore = 0;
+                }
+
+                let sugarScore;
+
+                if (food === true) {
+                    if (sugar <= 4.5) {
+                        sugarScore = 0;
+                    } else if (sugar <= 9) {
+                        sugarScore = 1;
+                    } else if (sugar <= 13.5) {
+                        sugarScore = 2;
+                    } else if (sugar <= 18) {
+                        sugarScore = 3;
+                    } else if (sugar <= 22.5) {
+                        sugarScore = 4;
+                    } else if (sugar <= 27) {
+                        sugarScore = 5;
+                    } else if (sugar <= 31) {
+                        sugarScore = 6;
+                    } else if (sugar <= 36) {
+                        sugarScore = 7;
+                    } else if (sugar <= 40) {
+                        sugarScore = 8;
+                    } else if (sugar <= 45) {
+                        sugarScore = 9;
+                    } else {
+                        sugarScore = 10;
+                    };
+                } else if (food === false) {
+                    if (sugar <= 0) {
+                        sugarScore = 0;
+                    } else if (sugar <= 1.5) {
+                        sugarScore = 1;
+                    } else if (sugar <= 3) {
+                        sugarScore = 2;
+                    } else if (sugar <= 4.5) {
+                        sugarScore = 3;
+                    } else if (sugar <= 6) {
+                        sugarScore = 4;
+                    } else if (sugar <= 7.5) {
+                        sugarScore = 5;
+                    } else if (sugar <= 9) {
+                        sugarScore = 6;
+                    } else if (sugar <= 10.5) {
+                        sugarScore = 7;
+                    } else if (sugar <= 12) {
+                        sugarScore = 8;
+                    } else if (sugar <= 13.5) {
+                        sugarScore = 9;
+                    } else {
+                        sugarScore = 10;
+                    }
+                }
+
+                let sodiumScore;
+
+                if (food === true) {
+                    if (sodium <= 90) {
+                        sodiumScore = 0;
+                    } else if (sodium <= 180) {
+                        sodiumScore = 1;
+                    } else if (sodium <= 270) {
+                        sodiumScore = 2;
+                    } else if (sodium <= 360) {
+                        sodiumScore = 3;
+                    } else if (sodium <= 450) {
+                        sodiumScore = 4;
+                    } else if (sodium <= 540) {
+                        sodiumScore = 5;
+                    } else if (sodium <= 630) {
+                        sodiumScore = 6;
+                    } else if (sodium <= 720) {
+                        sodiumScore = 7;
+                    } else if (sodium <= 810) {
+                        sodiumScore = 8;
+                    } else if (sodium <= 900) {
+                        sodiumScore = 9;
+                    } else {
+                        sodiumScore = 10;
+                    };
+                } else if (food === false) {
+                    sodiumScore = 0;
+                }
+
+                let badIngredientScore = energyScore + sugarScore + acidsScore + sodiumScore;
+
+                console.log("Bad ingredients score: " + badIngredientScore);
+
+
+                let fruitvegetablesScore;
+
+                if (food === true) {
+                    if (fruitvegetables <= 40) {
+                        fruitvegetablesScore = 0;
+                    } else if (fruitvegetables <= 60) {
+                        fruitvegetablesScore = 1;
+                    } else if (fruitvegetables <= 80) {
+                        fruitvegetablesScore = 2;
+                    } else {
+                        fruitvegetablesScore = 5;
+                    };
+                } if (food === false) {
+                    if (fruitvegetables <= 40) {
+                        fruitvegetablesScore = 0;
+                    } else if (fruitvegetables <= 60) {
+                        fruitvegetablesScore = 2;
+                    } else if (fruitvegetables <= 80) {
+                        fruitvegetablesScore = 4;
+                    } else {
+                        fruitvegetablesScore = 10;
+                    }
+                }
+
+                let fibersScore;
+
+                if (food === true) {
+                    if (fibers <= 0.9) {
+                        fibersScore = 0;
+                    } else if (fibers <= 1.9) {
+                        fibersScore = 1;
+                    } else if (fibers <= 2.8) {
+                        fibersScore = 2;
+                    } else if (fibers <= 3.7) {
+                        fibersScore = 3;
+                    } else if (fibers <= 4.7) {
+                        fibersScore = 4;
+                    } else {
+                        fibersScore = 5;
+                    };
+                } else if (food === false) {
+                    fibersScore = 0;
+                }
+
+                let proteinScore;
+
+                if (food === true) {
+                    if (protein <= 1.6) {
+                        proteinScore = 0;
+                    } else if (protein <= 3.2) {
+                        proteinScore = 1;
+                    } else if (protein <= 4.8) {
+                        proteinScore = 2;
+                    } else if (protein <= 6.4) {
+                        proteinScore = 3;
+                    } else if (protein <= 8.0) {
+                        proteinScore = 4;
+                    } else {
+                        proteinScore = 5;
+                    };
+                } else if (food === false) {
+                    proteinScore = 0;
+                }
+
+                // Calculating Nutriscore.
+                let goodIngredientScore = fruitvegetablesScore + fibersScore + proteinScore;
+
+                console.log("Good ingredients score: " + goodIngredientScore);
+
+                let nutriScoreNumber;
+
+                if (goodIngredientScore === 0 && badIngredientScore === 0) {
+                    nutriScoreNumber = 50;
+                } else if (badIngredientScore >= 11) {
+                    nutriScoreNumber = badIngredientScore - (fibersScore + fruitvegetablesScore);
+                } else {
+                    nutriScoreNumber = badIngredientScore - goodIngredientScore;
+                }
+
+                console.log(nutriScoreNumber);
+
+                if (food === true) {
+                    if (nutriScoreNumber <= -1) {
+                        nutriScore = "A";
+                    } else if (nutriScoreNumber <= 2) {
+                        nutriScore = "B";
+                    } else if (nutriScoreNumber <= 10) {
+                        nutriScore = "C";
+                    } else if (nutriScoreNumber <= 18) {
+                        nutriScore = "D";
+                    } else if (nutriScoreNumber <= 40) {
+                        nutriScore = "E";
+                    }
+                } else if (food === false) {
+                    if (water === true) {
+                        nutriScore = "A";
+                    } else if (water === false & nutriScoreNumber <= 1) {
+                        nutriScore = "B";
+                    } else if (water === false & nutriScoreNumber <= 5) {
+                        nutriScore = "C";
+                    } else if (water === false & nutriScoreNumber <= 9) {
+                        nutriScore = "D";
+                    } else if (water === false & nutriScoreNumber <= 30) {
+                        nutriScore = "E";
+                    }
+                }
+
+                console.log("THE NUTRI-SCORE OF THE PRODUCT IS: " + nutriScore);
+            } else {
+                console.log("Nutrient Table for calculation is missing!");
+                nutriScore = "invalid";
+            }
         },
     });
 }
 
-//Function for C nutriscore excpetion
 function loadQueryResults(queryname, callback)
 {
-    console.log("asdfasdfasdf",queryname)
+  
     $.ajax({
         url: "https://localhost/v1/queries/" + queryname,
         type: "GET",
@@ -215,14 +666,16 @@ function loadQueryResults(queryname, callback)
         },
     });
 }
-//function pushing the alternatives as an array to the final_result
+
+//Function pushing the alternatives as a array to the final_result.
+
 function queryResultsCallback(json, queryname) {
 
     let bindings = json["results"]["bindings"];
     let resultSet = [];
 
     // Gets executed after a SPARQL query for a better Nutriscore.
-    // Pushing all SPARQL results from "bindings" into the "resultSet".
+    // Pushing all SPARQL results from "bindings" into "resultSet".
     function alternativeSuggestionNutriscore(array2) {
         for (let i = 0; i < array2.length; i++) {
             resultSet.push([array2[i]["gtin"]["value"], array2[i]["product_name_en"]["value"], array2[i]["serving_size"]["value"]]);
@@ -231,7 +684,7 @@ function queryResultsCallback(json, queryname) {
 
     
 
-    // Function choosing random objects from "resultSet".
+    // Function for choosing random objects from "resultSet".
     // Copied from here: https://stackoverflow.com/a/19270021.
     function getRandom(array3, number) {
         let result = new Array(number),
@@ -255,7 +708,7 @@ function queryResultsCallback(json, queryname) {
         return finalResultSet;
    
 }
-//function displaying all the six alternatives to Homepage
+// Function displaying 6 alternatives to the the homepage.
 
  function display(_finalResultSet){
     console.log("display")
