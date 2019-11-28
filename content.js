@@ -1,4 +1,4 @@
-// Checking if Extension running properly.
+// Checking if running properly.
 console.log("Chrome extension is working!");
 
 
@@ -37,7 +37,7 @@ for (let i = 0; i < categorizationTable.length; i++) {
 categorization = categorizationTxt.toLowerCase();
 
 
-// Checking if product is food or a drink.
+// Checking if it is food or a drink.
 var food;
 if (categorization.indexOf("getränke heiss & kalt") >= 0) {
     food = false;
@@ -47,7 +47,7 @@ if (categorization.indexOf("getränke heiss & kalt") >= 0) {
 console.log("The object is food: " + food);
 
 
-// Checking if product is mineral water.
+// Checking if it is mineral water.
 var water;
 if (categorization.indexOf("mineralwasser") >= 0) {
     water = true;
@@ -57,12 +57,18 @@ if (categorization.indexOf("mineralwasser") >= 0) {
 console.log("The object is mineral water: " + water);
 
 
-// Checking if product belongs to the yoghurt category.
-var categoryCheck;
+// Checking if it belongs to the yoghurt category.
+var joghurtCheck;
 if (categorization.indexOf("joghurt & joghurtdrinks") >= 0) {
-    categoryCheck = true;
+    joghurtCheck = true;
 } else if (categorization.indexOf("joghurt & joghurtdrinks") <0) {
-    categoryCheck = false;
+    joghurtCheck = false;
+}
+var kaseCheck;
+if (categorization.indexOf("Käse ") >= 0) {
+    kaseCheck = true;
+} else if (categorization.indexOf("Käse ") <0) {
+    kaseCheck = false;
 }
 
 
@@ -82,145 +88,25 @@ function productDataCallback(json)
     if (json["products"] == null) {
         console.log("The product is not availabe in the database.");      
     } else {
-        console.log("Product data is available in the database.");
+        console.log("Product data is available in API.");
         // console.log(json["products"][0].nutri_score_final);
 
            return json["products"][0].nutri_score_final;
     }
 };
 
-//function to display the Nutri-score when the page starts
+//function to display nutri-score when the page starts
 loadProductData(productDataCallback);
 
 // Function to check if nutritional data is available and fetch it.
-// The local Nutriscore-calculation is done within this statement.
+// The whole Nutriscore-calculation is done within this statement.
 // These variables are defined globally, because they are needed later on.
+//nutri final score defintion
 var nutriScore;
 var queryname ;
 var finalResultSet;
 
-//function to return the Nutri-score 
-
-function show(_nutri_score_final){
-    nutriScore = _nutri_score_final;
-    console.log(nutriScore);
-    console.log("THE NUTRI-SCORE OF THE PRODUCT IS: " + nutriScore);
-    nsAURL = chrome.runtime.getURL("nsA.png");
-    nsBURL = chrome.runtime.getURL("nsB.png");
-    nsCURL = chrome.runtime.getURL("nsC.png");
-    nsDURL = chrome.runtime.getURL("nsD.png");
-    nsEURL = chrome.runtime.getURL("nsE.png");
-    nsVURL = chrome.runtime.getURL("nsV.png");
-
-
-    // Choose Current= 'EUR' Or 'CHF' depending on the CH/Germany Users. Data to be extracted from API later.
-
-
-    var div = document.createElement("DIV");
-    div.id = "imageHolder";
-    div.style.padding = "5px 10px 20px 0px";
-    var position = document.getElementById("info");
-    var current = "CHF";
-    var currency = document.getElementsByClassName("current-price")[0];
-    
- 
-    //Removal of Migros Extra content (Cumulus Ratings/Product Referrals/Comments) for the Study;
-
-    document.getElementsByClassName("widget-ratings clearfix")[0].remove();
-    document.getElementsByClassName("sidebar-product-information sidebar-product-availability")[0].remove();
-    document.getElementsByClassName("sidebar-product-information sidebar-retailer")[0].remove();
-    document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item")[0].remove();
-    document.getElementsByClassName("mui-panel panel-border-top")[0].remove();
-    document.getElementsByClassName("section-bottom-md-padding")[0].remove();
-    document.getElementsByClassName("section-bottom-padding bg-wooden")[0].remove();
-    document.getElementsByClassName("community-tabs-container bg-wooden")[0].remove();
-    document.getElementsByClassName("section-bottom-padding bg-wooden")[0].remove();
-    document.getElementsByClassName("container section-bottom-padding")[0].remove();
-    document.getElementsByClassName("section-bottom-padding bg-light js-related-products")[0].remove();
-    document.getElementsByClassName("section-bottom-padding last-seen-products js-last-seen-products")[0].remove();
-    var img = document.createElement("IMG");
-
-    //Addition of the Nutri-score Image;
-
-    if (nutriScore === "A") {
-        img.src = nsAURL;
-        queryname = "NutriscoreA"
-    } else if (nutriScore === "B") {
-        img.src = nsBURL;
-        queryname = "NutriscoreB"
-    } else if (nutriScore === "C") {
-        img.src = nsCURL;
-        queryname = "NutriscoreC"
-    } else if (nutriScore === "D") {
-        img.src = nsDURL;
-        queryname = "NutriscoreD"
-    } else if (nutriScore === "E") {
-        img.src = nsEURL;
-        queryname = "NutriscoreE"
-    } else {
-        img.src = nsVURL;
-        queryname = "NutriscoreV"
-    }
-    img.style.height = '87.5px';
-    img.style.width = '164px';
-    img.style.zIndex = '10';
-    img.style.display = 'block'
-    img.setAttribute("href", "https://world.openfoodfacts.org/nutriscore");
-
-    console.log("Nutri-Score image added!");
-
-
-    // Function Displaying Product price currency and adjustement depending on CH/Germany Users.
-
-    div.appendChild(img);
-    var title = document.createElement("TEXT");
-    title.textContent = Math.round(currency.innerText/1.7*20)/20;
-    title.style.fontSize = "20px";
-    title.style.color = "gray";
-    title.style.fontWeight="bold";
- 
-
-    var currency_eu = document.createElement("TEXT");
-    currency_eu.textContent = "EUR" ;
-    currency_eu.style.fontSize = "16px";
-    currency_eu.float="right";
-    currency_eu.style.color = "gray";
-    currency_eu.style.fontWeight="bold";
-
-    
-    if (current=="EUR") {
-        currency.innerHTML=title.innerText;
-    }
-    else{
-        currency_eu.textContent="CHF";
-    }
-    currency.append(currency_eu);
-    position.insertBefore(div, position.childNodes[0]);
-
-  //  loadQueryResults(queryname, queryResultsCallback);
-
-}
-  //Function requesting Nutri-score from API and calculating Nutri-score locally if does not work.
-
-function loadProductData(callback) {
-    $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        cache: false,
-        async: true,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
-        },
-        success: function(json) {
-            console.log("Success", json);
-            if(typeof callback == "function") {
-                 nutri_score_final = callback(json);
-                 show(nutri_score_final)
-            }
-        },
-         // Function calculating the Nutri-score Locally.
-         error: function() {
+function getScoreLocal() {
             var nutriScore;
             var acids;
             var energy;
@@ -230,11 +116,11 @@ function loadProductData(callback) {
             var sodium;
 
             var nutrientTable = document.getElementById("nutrient-table");
+            console.log(nutrientTable);
             if(nutrientTable != null) {
                 var nutrientColumns = nutrientTable.getElementsByTagName("td");
 
                 // Fetching nutritional data from HTML of website.
-
                 for (let i = 0; i < nutrientColumns.length; i++) {
                     if (nutrientColumns[i].innerText === "Energie") {
                         var energyTxt = nutrientColumns[i+1].innerText;
@@ -344,7 +230,6 @@ function loadProductData(callback) {
                 }
 
                 // Choosing Sodium or Natrium data, depeding on availability.
-
                 if (sodiumMG > natriumMG) {
                     sodium = sodiumMG;
                 } else if (sodiumMG = natriumMG) {
@@ -357,7 +242,7 @@ function loadProductData(callback) {
 
                 let fruitvegetables = 0;
 
-                // Code for calculation of NutriScore based.
+                // Code for calculation of NutriScore based
                 // on the recognized values on the website.
 
                 let energyScore;
@@ -599,16 +484,24 @@ function loadProductData(callback) {
                 console.log("Good ingredients score: " + goodIngredientScore);
 
                 let nutriScoreNumber;
+                
 
-                if (goodIngredientScore === 0 && badIngredientScore === 0) {
-                    nutriScoreNumber = 50;
-                } else if (badIngredientScore >= 11) {
-                    nutriScoreNumber = badIngredientScore - (fibersScore + fruitvegetablesScore);
-                } else {
-                    nutriScoreNumber = badIngredientScore - goodIngredientScore;
-                }
+                 
+                   if (badIngredientScore<=11) {
+                    nutriScoreNumber = badIngredientScore-goodIngredientScore-fruitvegetablesScore-fibersScore;
+                   }
+                   else{
+                    if (fruitvegetablesScore>=5) {
+                    nutriScoreNumber = badIngredientScore-goodIngredientScore-fruitvegetablesScore-fibersScore;
+                    }
+                    else{
+                        nutriScoreNumber = badIngredientScore-fruitvegetablesScore-fibersScore;
+                    }
+                   }
+                
 
-                console.log(nutriScoreNumber);
+
+                
 
                 if (food === true) {
                     if (nutriScoreNumber <= -1) {
@@ -641,10 +534,180 @@ function loadProductData(callback) {
                 console.log("Nutrient Table for calculation is missing!");
                 nutriScore = "invalid";
             }
+            return nutriScore;
+        }
+//function to return nutrisocre 
+function show(_nutri_score_final){
+    nutriScore = _nutri_score_final;
+    if(nutriScore==null){
+        console.log("wqwqe")
+        nutriScore = getScoreLocal();
+    }
+    console.log(nutriScore);
+    console.log("THE NUTRI-SCORE OF THE PRODUCT IS: " + nutriScore);
+    nsAURL = chrome.runtime.getURL("nsA.png");
+    nsBURL = chrome.runtime.getURL("nsB.png");
+    nsCURL = chrome.runtime.getURL("nsC.png");
+    nsDURL = chrome.runtime.getURL("nsD.png");
+    nsEURL = chrome.runtime.getURL("nsE.png");
+    nsVURL = chrome.runtime.getURL("nsV.png");
+
+    var div = document.createElement("DIV");
+    div.id = "imageHolder";
+    div.style.padding = "5px 10px 20px 0px";
+    var position = document.getElementById("info");
+    var current=false;
+    var currency = document.getElementsByClassName("current-price")[0];
+    // console.log(currency);
+
+    // console.log(currency);
+ 
+   // document.getElementsByClassName('mui-list-unstyled retailer-tabs clearfix retailer-tabs-6').childNodes[1]
+    document.getElementsByClassName("widget-ratings clearfix")[0].remove();
+    document.getElementsByClassName("sidebar-product-information sidebar-product-availability")[0].remove();
+    if (document.getElementsByClassName("clearfix mui-list-unstyled").length != 0)
+    document.getElementsByClassName("clearfix mui-list-unstyled")[0].remove();
+    document.getElementsByClassName("sidebar-favorite-button-container mui-js-favorite-button")[0].remove();
+    // document.getElementsByClassName("sidebar-product-information sidebar-retailer")[0].remove();
+    if (document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item").length != 0)
+    document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item")[0].remove();
+    document.getElementsByClassName("mui-panel panel-border-top")[0].remove();
+    document.getElementsByClassName("section-bottom-md-padding")[0].remove();
+    if (document.getElementsByClassName('section-bottom-md-padding').length!=0) 
+    document.getElementsByClassName("section-bottom-md-padding")[0].remove();
+
+    document.getElementsByClassName("section-bottom-padding bg-wooden")[0].remove();
+    if (document.getElementsByClassName("section-bottom-padding bg-wooden").length != 0)
+    document.getElementsByClassName("section-bottom-padding bg-wooden")[0].remove();
+    if (document.getElementsByClassName('container section-bottom-padding').length!=0)
+    document.getElementsByClassName("container section-bottom-padding")[0].remove();
+    if (document.getElementsByClassName('mui-share-buttons mui-js-share-buttons share-buttons').length!=0)
+    document.getElementsByClassName("mui-share-buttons mui-js-share-buttons share-buttons")[0].remove();
+    // document.getElementsByClassName("container section-bottom-padding")[1].remove();
+    document.getElementsByClassName("community-tabs-container bg-wooden")[0].remove();
+    if (document.getElementsByClassName('mui-js-community-reviews js-community-loaded').length!=0)
+    document.getElementsByClassName("mui-js-community-reviews js-community-loaded")[0].remove();
+    if (document.getElementsByClassName("section-bottom-padding bg-light js-related-products").length != 0)
+        document.getElementsByClassName("section-bottom-padding bg-light js-related-products")[0].remove();
+    if (document.getElementsByClassName('section-bottom-padding bg-white related-container container').length !=0) 
+        document.getElementsByClassName('section-bottom-padding bg-white related-container container')[0].remove();
+    if (document.getElementsByClassName('mui-button mui-message-list-load-all mui-js-message-list-load-all-trigger mui-js-load-all-reviews').length!=0)
+        document.getElementsByClassName('mui-button mui-message-list-load-all mui-js-message-list-load-all-trigger mui-js-load-all-reviews')[0].remove();
+    document.getElementsByClassName("section-bottom-padding last-seen-products js-last-seen-products")[0].remove();
+    // document.getElementById('gopt-related-products').remove();
+    document.getElementById('skip-footer').remove();
+   
+
+    var img = document.createElement("IMG");
+    if (nutriScore === "A") {
+        img.src = nsAURL;
+        queryname = "NutriscoreA"
+    } else if (nutriScore === "B") {
+        img.src = nsBURL;
+        queryname = "NutriscoreB"
+    } else if (nutriScore === "C") {
+        img.src = nsCURL;
+        queryname = "NutriscoreC"
+    } else if (nutriScore === "D") {
+        img.src = nsDURL;
+        queryname = "NutriscoreD"
+    } else if (nutriScore === "E") {
+        img.src = nsEURL;
+        queryname = "NutriscoreE"
+    } else {
+        img.src = nsVURL;
+        queryname = "NutriscoreV"
+    }
+    img.style.height = '87.5px';
+    img.style.width = '164px';
+    img.style.zIndex = '10';
+    img.style.display = 'block'
+    img.setAttribute("href", "https://world.openfoodfacts.org/nutriscore");
+
+    console.log("Nutri-Score image added!");
+    div.appendChild(img);
+    var title = document.createElement("TEXT");
+     if (currency!=null) {
+
+    title.textContent = Math.round(currency.innerText/1.7*20)/20;
+    title.style.fontSize = "20px";
+    title.style.color = "gray";
+    title.style.fontWeight="bold";
+   
+
+    var currency_unit = document.createElement("TEXT");
+    currency_unit.textContent = "EUR" ;
+    currency_unit.style.fontSize = "16px";
+    currency_unit.float="right";
+    currency_unit.style.color = "gray";
+    currency_unit.style.fontWeight="bold";
+
+    var currency_change = document.createElement("INPUT");
+    currency_change.type = "button";
+    currency_change.value = "Change Currency";
+    currency_change.style.lineHeight = 1;
+    currency_change.style.fontFamily = "Helvetica Neue Condensed,Impact,arial,sans-serif";
+    var current_instead = document.getElementsByClassName('usual-price')[0];
+    // current_instead.innerText = "statt " + Math.round(current_instead.innerText.split(' ')[1]/1.7*20)/20;
+    // console.log(current_instead[0].innerText.split(' ')[1]);
+    currency_change.addEventListener('click', function(){
+        current=!current;
+
+        if (current) {
+            currency.innerText = Math.round(currency.innerText/1.7*20)/20;
+            current_instead.innerText = "statt " + Math.round(current_instead.innerText.split(' ')[1]/1.7*20)/20;
+            currency_unit.textContent="EUR";
+        }
+        else{
+            currency.innerText = Math.round(currency.innerText*1.7*20)/20;
+            current_instead.innerText = "statt " + Math.round(current_instead.innerText.split(' ')[1]*1.7*20)/20;
+            currency_unit.textContent="CHF";
+        }
+    })
+
+    if (current) {
+        currency.innerHTML=title.innerText;
+    }
+    else{
+        currency_unit.textContent="CHF";
+    }
+    }
+
+    var sidebar_price = document.getElementsByClassName("sidebar-price")[0];
+
+    sidebar_price.append(currency_unit);
+    sidebar_price.append(currency_change);
+    position.insertBefore(div, position.childNodes[0]);
+  //  loadQueryResults(queryname, queryResultsCallback);
+
+}
+//function to send request to the api and receive response and return nutri-score
+function loadProductData(callback) {
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        cache: false,
+        async: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
         },
+        success: function(json) {
+            console.log("Success", json);
+            if(typeof callback == "function") {
+                 nutri_score_final = callback(json);
+                 show(nutri_score_final)
+            }
+        },
+        //function get nutri score if the json does not work
+        error:function(textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        },
+
     });
 }
 
+//function to send request that get products which nutrisocre is C
 function loadQueryResults(queryname, callback)
 {
   
@@ -666,16 +729,14 @@ function loadQueryResults(queryname, callback)
         },
     });
 }
-
-//Function pushing the alternatives as a array to the final_result.
-
+//function to push the alternatives as a array to the final_result
 function queryResultsCallback(json, queryname) {
 
     let bindings = json["results"]["bindings"];
     let resultSet = [];
 
     // Gets executed after a SPARQL query for a better Nutriscore.
-    // Pushing all SPARQL results from "bindings" into "resultSet".
+    // Pushing all SPARQL results from "bindings" into the "resultSet".
     function alternativeSuggestionNutriscore(array2) {
         for (let i = 0; i < array2.length; i++) {
             resultSet.push([array2[i]["gtin"]["value"], array2[i]["product_name_en"]["value"], array2[i]["serving_size"]["value"]]);
@@ -708,7 +769,7 @@ function queryResultsCallback(json, queryname) {
         return finalResultSet;
    
 }
-// Function displaying 6 alternatives to the the homepage.
+//function to display all the alternatives to your homepage,not work if the api is incorrect
 
  function display(_finalResultSet){
     console.log("display")
