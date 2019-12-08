@@ -134,12 +134,24 @@ chrome.runtime.onMessage.addListener(
                 selectgroup.style.top = "30%";
                 selectgroup.style.left = "37%";
                 selectcountry.id = "selectcountry";
-    
-                selectcountry.options.add(new Option("Germany", "SO"));
-                selectcountry.options.add(new Option("Switzerland", "FI"));
+                
+                var Country = 'Germany'
+                
+                console.log ('Country 1 is:'+ Country)
 
-                If
-            
+                selectcountry.options.add(new Option("Germany",Country='Germany'));
+                selectcountry.options.add(new Option("Switzerland",Country='Switzerland'));
+                
+                console.log ('Country 2 is:'+ Country)
+
+                $("#selectcountry").on("click", function() {
+
+                    Currency(Country);
+
+
+                });
+                console.log ('Country 3 is:'+ Country)
+
                 selectgroup.id = "Group";
         
                 selectgroup.options.add(new Option("A", "SO"))
@@ -209,6 +221,7 @@ chrome.runtime.onMessage.addListener(
         closer.style.left = "91%";
         $("#exitButton").on("click", function() {
             $(document.body).children("#overlay").remove();
+            window.location.reload();
         });
     }
 })

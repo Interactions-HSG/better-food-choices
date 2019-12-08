@@ -41,7 +41,7 @@ if (document.getElementsByClassName('mui-js-rating mui-product-tile-rating mui-j
 document.getElementsByClassName("mui-js-rating mui-product-tile-rating mui-js-rating-loaded")[0].remove();
 if (document.getElementsByClassName('mui-ratings-rating-star star-on-png').length!=0)
 document.getElementsByClassName("mui-ratings-rating-star star-on-png")[0].remove();
-if (document.getElementsByClassName('mui-product-tile-discount-image-container').length!=0)
+if (document.getElementsByClassName('mui-product-tile-discount-image-container').length!=0 && current == 'Germany')
 document.getElementsByClassName("mui-product-tile-discount-image-container")[0].remove();
 if (document.getElementsByClassName('mui-product-tile-footer').length!=0)
 document.getElementsByClassName("mui-product-tile-footer")[0].remove();
@@ -55,7 +55,7 @@ if (document.getElementsByClassName('retailer-tab retailer-tab-doitgarden').leng
 document.getElementsByClassName("retailer-tab retailer-tab-doitgarden")[0].remove();
 if (document.getElementsByClassName('retailer-tab retailer-tab-interio').length!=0)
 document.getElementsByClassName("retailer-tab retailer-tab-interio")[0].remove();
-if (document.getElementsByClassName('mui-product-tile-discount-image-container').length!=0)
+if (document.getElementsByClassName('mui-product-tile-discount-image-container').length!=0 && current == 'Germany')
 document.getElementsByClassName("mui-product-tile-discount-image-container")[0].remove();
 
 if (document.getElementsByClassName('sidebar-product-information sidebar-brandlabel-item').length!=0)
@@ -76,7 +76,7 @@ document.getElementsByClassName("sidebar-teaser")[0].remove();
 if (document.getElementsByClassName('listing-switcher').length!=0)
 document.getElementsByClassName("listing-switcher")[0].remove();
 
-if (document.getElementsByClassName('sidebar-discount-badge').length!=0)
+if (document.getElementsByClassName('sidebar-discount-badge').length!=0 && current == 'Germany')
 document.getElementsByClassName("sidebar-discount-badge")[0].remove();
 
 if (document.getElementsByClassName('sidebar-product-information sidebar-retailer ').length!=0)
