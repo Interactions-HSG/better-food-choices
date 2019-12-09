@@ -1,6 +1,6 @@
-function Currency (current){
-    var current;
-
+    console.log(" Country Selected on CC 1 is  : " + Country )
+    var Country = localStorage.getItem("CountryName");
+    console.log(" Country Selected on CC 1 is  : " + Country )
     var current_price = document.getElementsByClassName("current-price")[0];
     current_instead = document.getElementsByClassName('usual-price')[0];
     
@@ -22,31 +22,32 @@ function Currency (current){
     currency_unit.style.color = "gray";
     currency_unit.style.fontWeight="bold";
 
-    
+    //with Discount
 
-        if (current=='Germany') {
+        if (Country=='Germany') {
+
             price_in_chf = current_price.innerText;
             price_in_chf_number = parseFloat(price_in_chf.replace('-',''));
              
 
             console.log ('price in CHF:'+ price_in_chf_number)
 
-           current_discount_in_chf = current_instead.innerText
-           current_discount_in_chf_number = (current_discount_in_chf.replace('-',''));
-           current_discount_in_chf_number = parseFloat(current_discount_in_chf_number.replace('statt',''))
+            current_discount_in_chf = current_instead.innerText
+            current_discount_in_chf_number = (current_discount_in_chf.replace('-',''));
+            current_discount_in_chf_number = parseFloat(current_discount_in_chf_number.replace('statt',''))
 
-           price_in_eur = Math.round(price_in_chf_number/1.7*20,2)/20;
+            price_in_eur = Math.round(price_in_chf_number/1.7*20,2)/20;
           
         
         
-           current_discount_in_eur = Math.round(current_discount_in_chf_number/1.7*20,2)/20;
+            current_discount_in_eur = Math.round(current_discount_in_chf_number/1.7*20,2)/20;
         
         
-           current_price.innerText = price_in_eur;
-          current_instead.innerText = "statt " + current_discount_in_eur;
-          currency_unit.textContent="EUR";
+            current_price.innerText = price_in_eur;
+            current_instead.innerText = "statt " + current_discount_in_eur;
+            currency_unit.textContent="EUR";
 
-          //discount_percentage= Math.round((((price_in_chf_number -current_discount_in_chf_number )/price_in_chf_number)*50)-10);
+         
 
           discount_percentage= -(Math.round(((price_in_chf_number - current_discount_in_chf_number )/current_discount_in_chf_number)*10,1)/10)*100;
 
@@ -68,11 +69,18 @@ function Currency (current){
           
           console.log ('price in EUR:'+ current_price.innerText)
         }
-        else if (current=='Switzerland') {
+        else if (Country=='Switzerland') {
             
             price_in_chf = current_price.innerText;
-            current_instead.innerText = "statt " + current_discount_in_chf;
-            currency_unit.textContent="CHF";
+            price_in_chf_number = parseFloat(price_in_chf.replace('-',''));
+            
+            
+
+           current_discount_in_chf = current_instead.innerText
+           current_discount_in_chf_number = (current_discount_in_chf.replace('-',''));
+           current_discount_in_chf_number = parseFloat(current_discount_in_chf_number.replace('statt',''))
+
+           console.log ('price in CHF:'+ price_in_chf_number)
             
             discount_percentage= -(Math.round(((price_in_chf_number - current_discount_in_chf_number )/current_discount_in_chf_number)*10,1)/10)*100;
            
@@ -82,6 +90,10 @@ function Currency (current){
             Discount.float="right";
             Discount.style.color = "Orange";
             Discount.style.fontWeight="bold"
+            
+            price_in_chf = current_price.innerText;
+            current_instead.innerText = "statt " + current_discount_in_chf;
+            currency_unit.textContent="CHF";
 
             var sidebar_price = document.getElementsByClassName("sidebar-price")[0];
             sidebar_price.append(Discount);
@@ -91,7 +103,7 @@ function Currency (current){
         }
     
     
-    if (current=='Germany') {
+    if (Country=='Germany') {
         currency_unit.textContent="EUR"
     }
     else{
@@ -119,7 +131,7 @@ else {
 
     
 
-        if (current=='Germany') {
+        if (Country=='Germany') {
             price_in_chf = current_price.innerText;
             price_in_chf_number = parseFloat(price_in_chf.replace('-',''));
              
@@ -140,12 +152,12 @@ else {
           
           console.log ('price in EUR:'+ current_price.innerText)
         }
-        else if (current=='Switzerland') {
-            current_price.innerText = price_in_chf;
+        else if (Country=='Switzerland') {
+            
            
             currency_unit.textContent="CHF";
         }
-        if (current=='Germany') {
+        if (Country=='Germany') {
             currency_unit.textContent="EUR"
         }
         else{
@@ -155,10 +167,11 @@ else {
     
         var sidebar_price = document.getElementsByClassName("sidebar-price")[0];
     
+        
         sidebar_price.append(currency_unit);
         
     
 
 
 }
-}
+

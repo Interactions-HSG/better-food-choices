@@ -1,7 +1,9 @@
 // Checking if running properly.
 console.log("Chrome extension is working!");
 
-
+var group;
+var group = localStorage.getItem("GroupName");
+console.log ('group at refresh'+ group)
 
 // Admin Section.
 chrome.runtime.onMessage.addListener(
@@ -19,14 +21,19 @@ chrome.runtime.onMessage.addListener(
         var title = document.createElement("TEXT");
         var explanation = document.createElement("TEXT");
         var frag = document.createDocumentFragment();
-        var selectcountry = document.createElement("SELECT");
-        var selectgroup= document.createElement("SELECT");
         var input = document.createElement("INPUT");
         var confirm = document.createElement("INPUT");
         var closer = document.createElement("INPUT");
         var nutriInfo = document.createElement("INPUT");
         var Adminpassword = document.createElement("INPUT");
+
+        var country_germany = document.createElement("INPUT");
+        var country_ch = document.createElement("INPUT");
         
+        var group_a = document.createElement("INPUT");
+        var group_b= document.createElement("INPUT");
+        var group_c= document.createElement("INPUT");
+
 
         // Only append the elements if they are not already open.
        
@@ -111,53 +118,144 @@ chrome.runtime.onMessage.addListener(
 
             form.appendChild(Adminpassword);
             form.appendChild(confirm);
-
+//Password 
             $("#confirm").on("click", function() {
 
                password2 = document.getElementById("Adminpass").value;
             
 
             console.log(" Written password is : " + password2);
-
+//Set Password here 
             if (password2 == '123') {
 
-                if ($("#selectcountry").length == 0 && $("#selectgroup").length == 0) {
-                    frag.appendChild(selectcountry);
-                    frag.appendChild(selectgroup);
+                if ($("#country_germany").length == 0 && $("#group_a").length == 0) {
+                    frag.appendChild(country_germany);
+                    frag.appendChild(country_ch);
+                    frag.appendChild(group_a);
+                    frag.appendChild(group_b);
+                    frag.appendChild(group_c);
                     form.appendChild(frag);
                     
-                selectcountry.style.position = "absolute";
-                selectcountry.style.top = "24%";
-                selectcountry.style.left = "37%";
-        
-                selectgroup.style.position = "absolute";
-                selectgroup.style.top = "30%";
-                selectgroup.style.left = "37%";
-                selectcountry.id = "selectcountry";
+                    
                 
-                var Country = 'Germany'
+
+
+                country_germany.id = "country_germany";
+                country_germany.type = "button";
+                country_germany.value = "GERMANY";
+                country_germany.style.position = "absolute";
+                country_germany.style.top = "20%";
+                country_germany.style.left = "60%";
+                country_germany.style.color = "red";
+                country_germany.style.backgroundColor = "lightred";
+
+                $("#country_germany").on("click", function() {
+
+                    var Country = "Germany";
+                    localStorage.setItem("CountryName", Country);
+                 
+     
+                 console.log(" Country Selected is  : " + Country );
+
                 
-                console.log ('Country 1 is:'+ Country)
-
-                selectcountry.options.add(new Option("Germany",Country='Germany'));
-                selectcountry.options.add(new Option("Switzerland",Country='Switzerland'));
-                
-                console.log ('Country 2 is:'+ Country)
-
-                $("#selectcountry").on("click", function() {
-
-                    Currency(Country);
-
-
                 });
-                console.log ('Country 3 is:'+ Country)
 
-                selectgroup.id = "Group";
-        
-                selectgroup.options.add(new Option("A", "SO"))
-                selectgroup.options.add(new Option("B", "FI"));
-                selectgroup.options.add(new Option("C", "FI"));
-                } else if ($("#selectcountry").length > 0) {
+                country_ch.id = "country_ch";
+                country_ch.type = "button";
+                country_ch.value = "Switzerland";
+                country_ch.style.position = "absolute";
+                country_ch.style.top = "20%";
+                country_ch.style.left = "80%";
+                country_ch.style.color = "red";
+                country_ch.style.backgroundColor = "lightred";
+
+                $("#country_ch").on("click", function() {
+
+                    Country = "Switzerland";
+                    localStorage.setItem("CountryName", Country );
+                 
+     
+                 console.log(" Country Selected is  : " + Country);
+
+                
+                });
+
+                group_a.id = "group_a";
+                group_a.type = "button";
+                group_a.value = "NutriScore ABCDE";
+                group_a.style.position = "absolute";
+                group_a.style.top = "90%";
+                group_a.style.left = "20%";
+                group_a.style.color = "blue";
+                group_a.style.backgroundColor = "lightblue";
+
+                group_b.id = "group_b";
+                group_b.type = "button";
+                group_b.value = "NutriScore AB";
+                group_b.style.position = "absolute";
+                group_b.style.top = "90%";
+                group_b.style.left = "50%";
+                group_b.style.color = "blue";
+                group_b.style.backgroundColor = "lightblue";
+
+
+                group_c.id = "group_c";
+                group_c.type = "button";
+                group_c.value = "NutriScore Disabled";
+                group_c.style.position = "absolute";
+                group_c.style.top = "90%";
+                group_c.style.left = "80%";
+                group_c.style.color = "blue";
+                group_c.style.backgroundColor = "lightblue";
+
+
+
+                $("#group_a").on("click", function() {
+
+                    var group = "A";
+                    localStorage.setItem("GroupName", group);
+                 
+     
+                 console.log(" Group selected is  : " + group );
+
+                
+                });
+
+                
+                $("#group_b").on("click", function() {
+
+                    var group = "B";
+                    localStorage.setItem("GroupName", group);
+                 
+     
+                    console.log(" Group selected is  : " + group );
+
+                
+                });
+
+                
+                $("#group_c").on("click", function() {
+
+                    var group = "C";
+                    localStorage.setItem("GroupName", group);
+                 
+     
+                    console.log(" Group selected is  : " + group );
+
+                
+                });
+
+
+
+
+
+
+
+                
+                
+                
+            
+                } else if ($("#country_ch").length > 0) {
                     console.log("Admin menu is already open");
                 }
             } else {
@@ -166,7 +264,9 @@ chrome.runtime.onMessage.addListener(
     });
 });
         
-        
+
+
+
         nutriInfo.id = "nutriInfo";
         nutriInfo.type = "button";
         nutriInfo.value = "More infos about Nutriscore";
@@ -175,6 +275,7 @@ chrome.runtime.onMessage.addListener(
         nutriInfo.style.left = "76%";
         $("#nutriInfo").on("click", function() {
             window.open("https://world.openfoodfacts.org/nutriscore");
+        
     
         });
 
@@ -219,12 +320,15 @@ chrome.runtime.onMessage.addListener(
         closer.style.position = "absolute";
         closer.style.top = "5%";
         closer.style.left = "91%";
+        
         $("#exitButton").on("click", function() {
             $(document.body).children("#overlay").remove();
-            window.location.reload();
+            location.reload();
+            
         });
     }
 })
+
 
 
 // Looking for unique identifier(GTIN).
@@ -335,7 +439,8 @@ function loadProductData(callback) {
             console.log("Success", json);
             if(typeof callback == "function") {
                  nutri_score_final = callback(json);
-                 show(nutri_score_final)
+                 show (nutri_score_final);
+                 
 
 
             }
@@ -790,6 +895,8 @@ function getScoreLocal() {
 
         }
 //function to return nutrisocre 
+
+if (group == "A"){
 function show(_nutri_score_final){
     nutriScore = _nutri_score_final;
     if(nutriScore==null){
@@ -836,7 +943,7 @@ function show(_nutri_score_final){
     img.style.display = 'block'
     img.setAttribute("href", "https://world.openfoodfacts.org/nutriscore");
 
-    console.log("Nutri-Score image added!");
+    console.log("Nutri-Score Group A added!");
     div.appendChild(img);
 
     position.insertBefore(div, position.childNodes[0]);
@@ -844,3 +951,81 @@ function show(_nutri_score_final){
 
 }
 }
+else if (group == "B") {
+    function show(_nutri_score_final){
+        nutriScore = _nutri_score_final;
+        if(nutriScore==null){
+            console.log("Here you go")
+            nutriScore = getScoreLocal();
+        }
+        console.log(nutriScore);
+        console.log("THE NUTRI-SCORE OF THE PRODUCT IS: " + nutriScore);
+        nsAURL = chrome.runtime.getURL("nsA.png");
+        nsBURL = chrome.runtime.getURL("nsB.png");
+        
+    
+        var img = document.createElement("IMG");
+        if (nutriScore === "A") {
+            var div = document.createElement("DIV");
+        div.id = "imageHolder";
+        div.style.padding = "5px 10px 20px 0px";
+        var position = document.getElementById("info");
+            img.src = nsAURL;
+            queryname = "NutriscoreA"
+        } else if (nutriScore === "B") {
+            var div = document.createElement("DIV");
+        div.id = "imageHolder";
+        div.style.padding = "5px 10px 20px 0px";
+        var position = document.getElementById("info");
+            img.src = nsBURL;
+            queryname = "NutriscoreB"
+        } else if (nutriScore === "C") {
+            
+        } else if (nutriScore === "D") {
+            
+        } else if (nutriScore === "E") {
+            
+        } else {
+            img.src = nsVURL;
+            queryname = "NutriscoreV"
+        }
+        img.style.height = '87.5px';
+        img.style.width = '164px';
+        img.style.zIndex = '10';
+        img.style.display = 'block'
+        img.setAttribute("href", "https://world.openfoodfacts.org/nutriscore");
+    
+        console.log("Nutri-Score Group B image added!");
+        div.appendChild(img);
+    
+        position.insertBefore(div, position.childNodes[0]);
+      //  loadQueryResults(queryname, queryResultsCallback);
+
+
+}
+}
+else if (group == "C") {
+    
+    
+        console.log("NutriScore image Removed!");
+     
+
+
+
+
+
+
+    }
+    }
+    else {
+        console.log("NutiScore Group Error");
+    }
+
+//let OverviewBoxProduct = document.getElementsByClassName("mui-panel-tile mui-product-tile mui-tracking-information mui-product-tile-discount");
+//if (OverviewBoxProduct.length!=0) {
+
+   // var OverviewProductUrl = OverviewBoxProduct[0];
+    
+
+//let identifyURL = identifierTable.getElementsByTagName('td');
+//const result = _.filter(students, {student_id: studentId});
