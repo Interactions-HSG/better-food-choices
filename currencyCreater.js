@@ -1,5 +1,4 @@
 // This module customizes the price on a SINGLE PRODUCT to the user's location. 
-
 // get the user's country from localStorage
 var user_country = localStorage.getItem("CountryName");
 console.log("user_country: " + user_country )
@@ -33,8 +32,6 @@ conversion_GDP_DE = 46200.00;
 conversion_factor = (conversion_EUR_in_CHF * conversion_GDP_CH / conversion_GDP_DE).toFixed(3);
 console.log ('conversion_factor:  '+ conversion_factor);
 price_in_eur = ((price_in_chf_number/conversion_factor*20).toFixed(0)/20).toFixed(2);
-
-
 console.log ('price_in_eur: '+ price_in_eur);
 
 // Tailor currency unit to user's location 
@@ -73,7 +70,6 @@ if (current_instead_Label!=null) {
     if (user_country=="Germany") {
         current_instead_Label.innerText = "statt " + current_oldprice_in_eur;
     }
-
     discount_percentage= (100*(current_oldprice_in_chf_number-price_in_chf_number) / current_oldprice_in_chf_number).toFixed(0);
     console.log ('Discount Percentage:'+ discount_percentage);
     
@@ -91,5 +87,4 @@ if (current_instead_Label!=null) {
     discount_Label.parentElement = document.getElementsByClassName("sidebar-product-information")[0];
     current_price_Label.parentElement = document.getElementsByClassName("sidebar-product-information")[0];
     sidebar_discount_Label.insertAdjacentHTML('afterend', current_price_Label.outerHTML);
-
 }

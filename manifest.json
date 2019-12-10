@@ -9,7 +9,7 @@
     "content_scripts": [
         {
             "matches": ["http://produkte.migros.ch/*", "https://produkte.migros.ch/*", "http://search.migros.ch/de/q:*/", "https://search.migros.ch/de/q:*/"],
-            "js": ["jquery.min.js","currencyCreater.js","displayNutriscore.js","removeContent.js"]
+            "js": ["jquery.min.js","buttonMenu.js","currencyCreater.js","displayNutriscore.js","removeContent.js"]
         }
     ],
     "background": {
