@@ -4,7 +4,7 @@ if (document.getElementsByClassName('sidebar-product-information sidebar-product
 document.getElementsByClassName("sidebar-product-information sidebar-product-availability")[0].remove();
 if (document.getElementsByClassName("clearfix mui-list-unstyled").length != 0)
 document.getElementsByClassName("clearfix mui-list-unstyled")[0].remove();
-if (document.getElementsByClassName("mui-favorite-button mui-button mui-button-naked mui-button-withicon").length != 0)
+if (document.getElementsByClassName('mui-favorite-button mui-button mui-button-naked mui-button-withicon').length != 0)
 document.getElementsByClassName("mui-favorite-button mui-button mui-button-naked mui-button-withicon")[0].remove();
 
 
