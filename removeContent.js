@@ -13,7 +13,9 @@ document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-
 if (document.getElementsByClassName("mui-panel panel-border-top").length != 0)
 document.getElementsByClassName("mui-panel panel-border-top")[0].remove();
 
-
+// remove existing discount labels (images)
+if (document.getElementsByClassName("sidebar-discount-badge")[0].length != 0)
+document.getElementsByClassName("sidebar-discount-badge")[0].remove();
 
 if (document.getElementsByClassName('section-bottom-md-padding').length!=0) 
 document.getElementsByClassName("section-bottom-md-padding")[0].remove();

@@ -75,16 +75,33 @@ if (current_instead_Label!=null) {
     
     // Add discount label to page
     var sidebar_discount_Label = document.getElementsByClassName("sidebar-discount-badge")[0];
+
+    var discountHolder = document.createElement("DIV");
+    discountHolder.id = "discountHolder";
+    discountHolder.style.display = "inline-block";
+    discountHolder.style.margin = "0px 0px 0px 0px";
+    var position = document.getElementById("info");
+    
     var discount_Label = document.createElement("TEXT");
-    discount_Label.style.fontSize = "40px";
+    discount_Label.style.fontSize = "35px";
     discount_Label.float="right";
-    discount_Label.style.backgroundColor = "#ff4d00";
+    discount_Label.style.backgroundImage = "linear-gradient(130deg, #ffb696,#ff4d00, #ff4d00, #ffb696)";
     discount_Label.style.color = "White";
     discount_Label.style.fontWeight="bold"; 
-    discount_Label.style.margin = "auto";
-    discount_Label.textContent = " - " + discount_percentage +"%" ;
-    sidebar_discount_Label.replaceWith(discount_Label);
+    discount_Label.style.margin = "20px 0px 20px 0px";
+    discount_Label.textContent = ""+ discount_percentage +"%" ;
+
+    discountHolder.appendChild(discount_Label);
+    position.insertBefore(discountHolder, position.childNodes[1]);
+
+    //sidebar_discount_Label.replaceWith(discount_Label);
     discount_Label.parentElement = document.getElementsByClassName("sidebar-product-information")[0];
     current_price_Label.parentElement = document.getElementsByClassName("sidebar-product-information")[0];
-    sidebar_discount_Label.insertAdjacentHTML('afterend', current_price_Label.outerHTML);
+    //sidebar_discount_Label.insertAdjacentHTML('afterend', current_price_Label.outerHTML);
+    discountHolder.style.boxShadow = "5px 5px 5px darkgrey";
+    discountHolder.style.webkitTransform = "rotate(-5deg)";
+    discountHolder.style.mozTransform = "rotate(-5deg)";
+    discountHolder.style.msTransform = "rotate(-5deg)";
+    discountHolder.style.oTransform = "rotate(-5deg)";
+    discountHolder.style.transform = "rotate(-5deg)";    
 }

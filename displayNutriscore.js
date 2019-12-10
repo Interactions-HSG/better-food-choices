@@ -581,7 +581,7 @@ function show(_nutri_score_final){
 
     var div = document.createElement("DIV");
     div.id = "imageHolder";
-    div.style.padding = "5px 10px 20px 0px";
+    div.style.margin = "auto";
     var position = document.getElementById("info");
 
     var img = document.createElement("IMG");
@@ -672,20 +672,13 @@ else if (group == "B") {
 }
 }
 else if (group == "C") {
-    
-    
+
         console.log("NutriScore image Removed!");
-     
-
-
-
-
-
-
+    
     }
     }
     else {
         console.log("NutiScore Group Error");
-    }
+}
 
 
