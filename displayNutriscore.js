@@ -1022,17 +1022,3 @@ else if (group == "C") {
     }
 
 
-var OverviewBoxProduct;
-let OverviewBoxProduct = document.getElementsByClassName("mui-panel-tile mui-product-tile mui-tracking-information mui-product-tile-discount");
-if (OverviewBoxProduct.length!=0) {
-
-    var OverviewProductUrl = OverviewBoxProduct[0];
-    
-
-
-
-let identifyURL = identifierTable.getElementsByTagName('td');
-//const result = _.filter(students, {student_id: studentId});
-
-console.log('URL' + OverviewProductUrl);
-}
