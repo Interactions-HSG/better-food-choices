@@ -4,12 +4,16 @@ if (document.getElementsByClassName('sidebar-product-information sidebar-product
 document.getElementsByClassName("sidebar-product-information sidebar-product-availability")[0].remove();
 if (document.getElementsByClassName("clearfix mui-list-unstyled").length != 0)
 document.getElementsByClassName("clearfix mui-list-unstyled")[0].remove();
-if (document.getElementsByClassName("sidebar-favorite-button-container mui-js-favorite-button").length != 0)
-document.getElementsByClassName("sidebar-favorite-button-container mui-js-favorite-button")[0].remove();
+if (document.getElementsByClassName("mui-favorite-button mui-button mui-button-naked mui-button-withicon").length != 0)
+document.getElementsByClassName("mui-favorite-button mui-button mui-button-naked mui-button-withicon")[0].remove();
+
+
 if (document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item").length != 0)
 document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item")[0].remove();
 if (document.getElementsByClassName("mui-panel panel-border-top").length != 0)
 document.getElementsByClassName("mui-panel panel-border-top")[0].remove();
+
+
 
 if (document.getElementsByClassName('section-bottom-md-padding').length!=0) 
 document.getElementsByClassName("section-bottom-md-padding")[0].remove();
@@ -41,7 +45,7 @@ if (document.getElementsByClassName('mui-js-rating mui-product-tile-rating mui-j
 document.getElementsByClassName("mui-js-rating mui-product-tile-rating mui-js-rating-loaded")[0].remove();
 if (document.getElementsByClassName('mui-ratings-rating-star star-on-png').length!=0)
 document.getElementsByClassName("mui-ratings-rating-star star-on-png")[0].remove();
-if (document.getElementsByClassName('mui-product-tile-discount-image-container').length!=0 && Country == 'Germany')
+if (document.getElementsByClassName('mui-product-tile-discount-image-container').length!=0)
 document.getElementsByClassName("mui-product-tile-discount-image-container")[0].remove();
 if (document.getElementsByClassName('mui-product-tile-footer').length!=0)
 document.getElementsByClassName("mui-product-tile-footer")[0].remove();
@@ -55,7 +59,7 @@ if (document.getElementsByClassName('retailer-tab retailer-tab-doitgarden').leng
 document.getElementsByClassName("retailer-tab retailer-tab-doitgarden")[0].remove();
 if (document.getElementsByClassName('retailer-tab retailer-tab-interio').length!=0)
 document.getElementsByClassName("retailer-tab retailer-tab-interio")[0].remove();
-if (document.getElementsByClassName('mui-product-tile-discount-image-container').length!=0 && Country == 'Germany')
+if (document.getElementsByClassName('mui-product-tile-discount-image-container').length!=0)
 document.getElementsByClassName("mui-product-tile-discount-image-container")[0].remove();
 
 if (document.getElementsByClassName('sidebar-product-information sidebar-brandlabel-item').length!=0)
@@ -76,7 +80,7 @@ document.getElementsByClassName("sidebar-teaser")[0].remove();
 if (document.getElementsByClassName('listing-switcher').length!=0)
 document.getElementsByClassName("listing-switcher")[0].remove();
 
-if (document.getElementsByClassName('sidebar-discount-badge').length!=0 && Country == 'Germany')
+if (document.getElementsByClassName('sidebar-discount-badge').length!=0)
 document.getElementsByClassName("sidebar-discount-badge")[0].remove();
 
 if (document.getElementsByClassName('sidebar-product-information sidebar-retailer ').length!=0)
