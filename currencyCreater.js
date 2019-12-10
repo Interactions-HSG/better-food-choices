@@ -44,7 +44,7 @@
         
         
             current_price.innerText = price_in_eur;
-            current_instead.innerText = "statt " + current_discount_in_eur;
+            current_instead.innerText = 'statt '+  current_discount_in_eur;
             currency_unit.textContent="EUR";
 
          
@@ -92,7 +92,7 @@
             Discount.style.fontWeight="bold"
             
             price_in_chf = current_price.innerText;
-            current_instead.innerText = "statt " + current_discount_in_chf;
+            current_instead.innerText = 'statt '+  current_discount_in_chf_number;
             currency_unit.textContent="CHF";
 
             var sidebar_price = document.getElementsByClassName("sidebar-price")[0];
