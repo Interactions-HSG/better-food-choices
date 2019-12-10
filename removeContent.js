@@ -7,6 +7,11 @@ if (document.getElementsByClassName('sidebar-availability-store-information').le
 document.getElementsByClassName("sidebar-availability-store-information")[0].remove();
 if (document.getElementsByClassName('sidebar-product-availability').length!=0) 
 document.getElementsByClassName("sidebar-product-availability")[0].remove();
+// Remove Add to Favorite 
+if (document.getElementsByClassName('sidebar-favorite-button-container').length!=0) 
+document.getElementsByClassName("sidebar-favorite-button-container")[0].remove();
+
+
 
 // Category Overview Page
 
