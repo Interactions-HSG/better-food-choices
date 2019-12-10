@@ -1,21 +1,21 @@
 if (document.getElementsByClassName('widget-ratings clearfix').length!=0) 
 document.getElementsByClassName("widget-ratings clearfix")[0].remove();
-if (document.getElementsByClassName('sidebar-product-information sidebar-product-availability').length!=0) 
+if (document.getElementsByClassName('sidebar-product-information sidebar-product-availability').length!=0);
 document.getElementsByClassName("sidebar-product-information sidebar-product-availability")[0].remove();
-if (document.getElementsByClassName("clearfix mui-list-unstyled").length != 0)
+if (document.getElementsByClassName("clearfix mui-list-unstyled").length != 0);
 document.getElementsByClassName("clearfix mui-list-unstyled")[0].remove();
-if (document.getElementsByClassName('mui-favorite-button mui-button mui-button-naked mui-button-withicon').length != 0)
-document.getElementsByClassName("mui-favorite-button mui-button mui-button-naked mui-button-withicon")[0].remove();
+if (document.getElementsByClassName('sidebar-favorite-button-container mui-js-favorite-button').length != 0);
+document.getElementsByClassName("sidebar-favorite-button-container mui-js-favorite-button")[0].remove();
 
 
 if (document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item").length != 0)
 document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item")[0].remove();
-if (document.getElementsByClassName("mui-panel panel-border-top").length != 0)
+
+
+if (document.getElementsByClassName("mui-panel panel-border-top").length != 0);
 document.getElementsByClassName("mui-panel panel-border-top")[0].remove();
 
-// remove existing discount labels (images)
-if (document.getElementsByClassName("sidebar-discount-badge")[0].length != 0)
-document.getElementsByClassName("sidebar-discount-badge")[0].remove();
+
 
 if (document.getElementsByClassName('section-bottom-md-padding').length!=0) 
 document.getElementsByClassName("section-bottom-md-padding")[0].remove();
