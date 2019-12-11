@@ -13,7 +13,7 @@ const pageTypes = {
 // Detect DOM Changes
 var mutationObserver = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
-      console.log("mutationObserver:" + mutation);
+      console.log("mutationObserver:" + mutation + ". attributeName: " + mutation.attributeName);
 
 
 
@@ -27,6 +27,8 @@ $(document).ready(function(){
     console.log("Main.js: is working and page has finished loading!");
 
     // Starts listening for changes in the root HTML element of the page.
+    // https://blog.sessionstack.com/how-javascript-works-tracking-changes-in-the-dom-using-mutationobserver-86adc7446401
+    // https://benfrain.com/an-introduction-to-the-javascript-mutationobserver-api/
     mutationObserver.observe(document.documentElement, {
         attributes: true,
         characterData: true,
@@ -35,7 +37,7 @@ $(document).ready(function(){
         attributeOldValue: true,
         characterDataOldValue: true
     });
-    
+
     // Check current pagetype
     let currentPage = pageTypes.OTHER;
     if (document.getElementsByClassName('mui-js-product-list').length>0) {
