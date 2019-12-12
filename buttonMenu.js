@@ -1,21 +1,22 @@
 // Checking if running properly.
 console.log("Chrome extension is working!");
-
 var group;
 var group = localStorage.getItem("GroupName");
 console.log ('group at refresh'+ group)
 
-// Admin Section.
+// Admin Section. Activated on extension button click.
 chrome.runtime.onMessage.addListener(
     function (request){
     if (request.Notice) {
         console.log("The button was clicked");
         
+     //Admin holder appended on click.
         document.documentElement.style.height = "100%";
         document.body.style.height = "100%";
         document.documentElement.style.width = '100%';
-        document.body.style.width = '100%';
+        document.body.style.width = '100%'; 
 
+        //variables for design buttons.
         var div2 = document.createElement("DIV");
         var form = document.createElement("FORM");
         var title = document.createElement("TEXT");
@@ -26,36 +27,39 @@ chrome.runtime.onMessage.addListener(
         var closer = document.createElement("INPUT");
         var nutriInfo = document.createElement("INPUT");
         var Adminpassword = document.createElement("INPUT");
+        var FalsePassword = document.createElement("TEXT");
+        var countryselecttext = document.createElement("TEXT");
+        var nutriscoreselecttext = document.createElement("TEXT");
+        var Start = document.createElement("INPUT");
+        var Finish = document.createElement("INPUT");
 
+        //variables for study group selection. 
         var country_germany = document.createElement("INPUT");
         var country_ch = document.createElement("INPUT");
         
+        //variable for country selection.  
         var group_a = document.createElement("INPUT");
         var group_b= document.createElement("INPUT");
         var group_c= document.createElement("INPUT");
 
-
         // Only append the elements if they are not already open.
-       
-        if ($("#overlay").length == 0) {
-            document.body.appendChild(div2);
+       if ($("#overlay").length == 0) {
+           document.body.appendChild(div2);
             div2.appendChild(form);
             form.appendChild(title);
             form.appendChild(explanation);
             form.appendChild(input);
             form.appendChild(closer);
             form.appendChild(nutriInfo);
-            
-            
-
-
+            form.appendChild(Start);
+            form.appendChild(Finish);
         } else if ($("#overlay").length > 0) {
             console.log("The menu is already open");
         }
-        
-        form.style.textAlign = "center";
+    form.style.textAlign = "center";
 
-        div2.id = "overlay";
+    //Admin buttons & password set creation.
+    div2.id = "overlay";
         div2.style.position = 'fixed';
         div2.style.top = '30%';
         div2.style.left = '10%';
@@ -67,87 +71,157 @@ chrome.runtime.onMessage.addListener(
         div2.style.border = 'solid';
         div2.style.borderWidth = '5px';
         div2.style.borderRadius = '20px';
-        div2.style.borderColor = 'lightblue';
+        div2.style.borderColor = 'lightgreen';
 
+        //Menu title.
         title.textContent = "Welcome to the Nutriscore Study";
         title.style.fontSize = "20px";
         title.style.position = "absolute";
-        title.style.top = "7%";
-        title.style.left = "40%";
+        title.style.top = "10%";
+        title.style.left = "37%";
 
-        explanation.textContent = "TEXT"
-        explanation.style.fontSize = "14px";
+        //Explanation text.
+        explanation.textContent = "Welcome to the study menu. Please press the 'Start study' button before shopping. Please press 'Finish study' when you are done shopping."
+        explanation.style.fontSize = "18px";
         explanation.style.position = "absolute";
-        explanation.style.top = "53%"
-        explanation.style.left = "19%";
+        explanation.style.top = "20%"
+        explanation.style.left = "0%";
 
+        //Settings button.
         input.id = "Adminbutton";
         input.type = "button";
-        input.value = "Admin";
+        input.value = "Settings";
         input.style.position = "absolute";
         input.style.top = "39%";
-        input.style.left = "42%";
-        input.style.color = "darkgreen";
-        input.style.backgroundColor = "lightgreen";
+        input.style.left = "5%";
 
-    ////Admin section
+        //Start button.
+        Start.id = "Start";
+        Start.type = "button";
+        Start.value = "Start study";
+        Start.style.position = "absolute";
+        Start.style.top = "50%";
+        Start.style.left = "35%";
 
+        //Finish button.
+        Finish.id = "Finish";
+        Finish.type = "button";
+        Finish.value = "Finish study";
+        Finish.style.position = "absolute";
+        Finish.style.top = "50%";
+        Finish.style.left = "55%";
        
-        $("#Adminbutton").on("click", function() {
-    
-        var password2 = '123';
+        $("#Start").on("click", function() {
+            var start_time = new Date();
+            localStorage.setItem("starttime", start_time);
+            console.log ('start:'+start_time)});
 
+        $("#Finish").on("click", function() {
+            var end_time = new Date();
+            var new_start_time = localStorage.getItem("starttime");
+            
+
+            var elapsed = end_time - new_start_time;
+            var seconds = Math.round(elapsed / 1000);
+            var minutes = Math.round(seconds / 60);
+            var hours = Math.round(minutes / 60);
+
+            console.log ('Time spent during the study:'+ hours+':'+minutes+':'+seconds)
+        });
+
+
+        //Settings button activation.
+         $("#Adminbutton").on("click", function() {
+
+
+         var password2 = '123';
+//Password text and confirm button display
 
             Adminpassword.id = "Adminpass";
             Adminpassword.type = "Text";
-            Adminpassword.value = "Password";
+            Adminpassword.value = "";
             Adminpassword.style.position = "absolute";
-            Adminpassword.style.top = "60%";
-            Adminpassword.style.left = "42%";
-            Adminpassword.style.color = "darkgreen";
-            Adminpassword.style.backgroundColor = "lightgreen";
+            Adminpassword.style.top = "39%";
+            Adminpassword.style.left = "40%";
+            
 
             confirm.id = "confirm";
             confirm.type = "button";
             confirm.value = "Confirm";
             confirm.style.position = "absolute";
-            confirm.style.top = "60%";
-            confirm.style.left = "60%";
-            confirm.style.color = "darkgreen";
-            confirm.style.backgroundColor = "lightgreen";
+            confirm.style.top = "39%";
+            confirm.style.left = "65%";
+          
 
             form.appendChild(Adminpassword);
             form.appendChild(confirm);
-//Password 
+//Password aquisition.
             $("#confirm").on("click", function() {
 
                password2 = document.getElementById("Adminpass").value;
             
 
             console.log(" Written password is : " + password2);
-//Set Password here 
+
+            //Set Password here:
+
             if (password2 == '123') {
 
+
+                //Remove password section of password is right.
+
+                if (Adminpassword.length!=0) {
+                Adminpassword.remove();}
+
+                if (confirm.length!=0) {
+                confirm.remove();}
+
+                if (FalsePassword.length!=0) {
+                    FalsePassword.remove();}
+
+
+
+                    //Displaying Settings Menu.
+
                 if ($("#country_germany").length == 0 && $("#group_a").length == 0) {
+
+
                     frag.appendChild(country_germany);
                     frag.appendChild(country_ch);
                     frag.appendChild(group_a);
                     frag.appendChild(group_b);
                     frag.appendChild(group_c);
+                    frag.appendChild(countryselecttext);
+                    frag.appendChild(nutriscoreselecttext);
                     form.appendChild(frag);
+//Selection text forcountry and group 
+
+                    countryselecttext.textContent = "Please select a country:";
+                    countryselecttext.fontSize = "20px";
+                    countryselecttext.style.position = "absolute";
+                    countryselecttext.style.top = "70%";
+                    countryselecttext.style.left = "5%";
+
+                    nutriscoreselecttext.textContent = "Please select a group: ";
+                    nutriscoreselecttext.fontSize = "20px";
+                    nutriscoreselecttext.style.position = "absolute";
+                    nutriscoreselecttext.style.top = "60%";
+                    nutriscoreselecttext.style.left = "5%";
                     
                     
                 
+// Germany button.
 
 
-                country_germany.id = "country_germany";
+                 country_germany.id = "country_germany";
                 country_germany.type = "button";
-                country_germany.value = "GERMANY";
+                country_germany.value = "Germany";
                 country_germany.style.position = "absolute";
-                country_germany.style.top = "20%";
-                country_germany.style.left = "60%";
-                country_germany.style.color = "red";
-                country_germany.style.backgroundColor = "lightred";
+                country_germany.style.top = "70%";
+                country_germany.style.left = "40%";
+
+
+                // Germany variable local storage.
 
                 $("#country_germany").on("click", function() {
 
@@ -164,11 +238,10 @@ chrome.runtime.onMessage.addListener(
                 country_ch.type = "button";
                 country_ch.value = "Switzerland";
                 country_ch.style.position = "absolute";
-                country_ch.style.top = "20%";
-                country_ch.style.left = "80%";
-                country_ch.style.color = "red";
-                country_ch.style.backgroundColor = "lightred";
+                country_ch.style.top = "70%";
+                country_ch.style.left = "30%";
 
+                // Switzerland variable local storage
                 $("#country_ch").on("click", function() {
 
                     Country = "Switzerland";
@@ -182,31 +255,28 @@ chrome.runtime.onMessage.addListener(
 
                 group_a.id = "group_a";
                 group_a.type = "button";
-                group_a.value = "NutriScore ABCDE";
+                group_a.value = "NutriScore: A/B/C/D/E";
                 group_a.style.position = "absolute";
-                group_a.style.top = "90%";
-                group_a.style.left = "20%";
-                group_a.style.color = "blue";
-                group_a.style.backgroundColor = "lightblue";
+                group_a.style.top = "60%";
+                group_a.style.left = "30%";
+                
 
                 group_b.id = "group_b";
                 group_b.type = "button";
-                group_b.value = "NutriScore AB";
+                group_b.value = "NutriScore: A/B";
                 group_b.style.position = "absolute";
-                group_b.style.top = "90%";
-                group_b.style.left = "50%";
-                group_b.style.color = "blue";
-                group_b.style.backgroundColor = "lightblue";
+                group_b.style.top = "60%";
+                group_b.style.left = "47%";
+               
 
 
                 group_c.id = "group_c";
                 group_c.type = "button";
-                group_c.value = "NutriScore Disabled";
+                group_c.value = "NutriScore disabled";
                 group_c.style.position = "absolute";
-                group_c.style.top = "90%";
-                group_c.style.left = "80%";
-                group_c.style.color = "blue";
-                group_c.style.backgroundColor = "lightblue";
+                group_c.style.top = "60%";
+                group_c.style.left = "60%";
+               
 
 
 
@@ -260,6 +330,14 @@ chrome.runtime.onMessage.addListener(
                 }
             } else {
                 console.log(" Password False");
+                form.appendChild(FalsePassword);
+                FalsePassword.textContent = "Wrong password!"
+                FalsePassword.fontSize = "18px";
+                FalsePassword.style.position = "absolute";
+                FalsePassword.style.top = "39%"
+                FalsePassword.style.left = "80%";
+
+
             };
     });
 });
@@ -319,7 +397,7 @@ chrome.runtime.onMessage.addListener(
         closer.value = "Close";
         closer.style.position = "absolute";
         closer.style.top = "5%";
-        closer.style.left = "91%";
+        closer.style.left = "88%";
         
         $("#exitButton").on("click", function() {
             $(document.body).children("#overlay").remove();
