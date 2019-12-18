@@ -1,5 +1,9 @@
 # Installation Guide
 
+<img src="https://www.autoidlabs.ch/wp-content/uploads/2019/12/1000_700pixs_p1.png"
+     alt="A novel chrome extension to discover better food choices in eCommerce environments"
+     style="float: left; margin-right: 10px;" />
+
 ## Download and Unzip
 To install the Google Chrome extension, please download the ZIP content of from the repository.
 Unzip the archive locally on your machine.
