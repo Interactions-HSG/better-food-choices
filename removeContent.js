@@ -1,7 +1,20 @@
 
-
 // Migros 
 // Single Product Page
+// Remove Sidebar Product Labels
+if (document.getElementsByClassName('sidebar-product-information sidebar-brandlabel-item').length!=0) 
+document.getElementsByClassName("sidebar-product-information sidebar-brandlabel-item")[0].remove();
+
+if (document.getElementsByClassName('sidebar-brandlabel-text-container').length!=0) 
+document.getElementsByClassName("sidebar-brandlabel-text-container")[0].remove();
+
+if (document.getElementsByClassName('sidebar-brandlabel-image-container').length!=0) 
+document.getElementsByClassName("sidebar-brandlabel-image-container")[0].remove();
+
+if (document.getElementsByClassName('sidebar-product-information sidebar-retailer').length!=0) 
+document.getElementsByClassName("sidebar-product-information sidebar-retailer")[0].remove();
+
+
 // Remove Availability Information
 if (document.getElementsByClassName('sidebar-availability-store-information').length!=0) 
 document.getElementsByClassName("sidebar-availability-store-information")[0].remove();
@@ -13,8 +26,11 @@ document.getElementsByClassName("sidebar-favorite-button-container")[0].remove()
 
 
 
+
 // Category Overview Page
 
+if (document.getElementsByClassName('mui-lazyload ls-is-cached lazyloaded').length!=0) 
+document.getElementsByClassName("mui-lazyload ls-is-cached lazyloaded")[0].remove();
 
 if (document.getElementsByClassName('widget-ratings clearfix').length!=0) 
 document.getElementsByClassName("widget-ratings clearfix")[0].remove();
@@ -106,9 +122,9 @@ document.getElementsByClassName("row mui-footer-link-area")[0].remove();
 
 var top_button = document.getElementsByClassName('mui-list-unstyled retailer-tabs clearfix retailer-tabs-6')[0];
 if (top_button) {
-    for (var i = 2; i < top_button.childNodes.length; i++) {
-        top_button.childNodes[i].remove()
-            if (top_button.childNodes.length<2)
-                break;
-         }
+	for (var i = 2; i < top_button.childNodes.length; i++) {
+		top_button.childNodes[i].remove()
+			if (top_button.childNodes.length<2)
+				break;
+		 }
 }

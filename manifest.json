@@ -9,14 +9,14 @@
     "content_scripts": [
         {
             "matches": ["http://produkte.migros.ch/*", "https://produkte.migros.ch/*", "http://search.migros.ch/de/q:*/", "https://search.migros.ch/de/q:*/"],
-            "js": ["jquery.min.js","main.js","buttonMenu.js","convertCurrency.js","displayNutriscore.js","removeContent.js"]
+            "js": ["jquery.min.js", "buttonMenu.js","OverviewPage.js","displayNutriscoreSingle.js","convertCurrency.js","removeContent.js"]
         }
     ],
     "background": {
         "scripts": ["background.js"],
         "persistent": false
     },
-    "web_accessible_resources": ["nsA.png", "nsB.png", "nsC.png", "nsD.png", "nsE.png", "nsV.png"],
+    "web_accessible_resources": ["nsA.png", "nsB.png", "nsC.png", "nsD.png", "nsE.png", "nsV.png", "A.png", "B.png", "C.png", "D.png", "E.png", "V.png"],
     "browser_action": {
         "default_icon": "ns_32.png",
         "default_title": "Look for product alternatives!"
