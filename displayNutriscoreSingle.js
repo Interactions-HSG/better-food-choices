@@ -569,13 +569,44 @@ if (page_type === "migros.singleproduct") {
             return nutriScore;
 
         }
+        if (nutriScore != nutri_score_final) {
+           
+            var data2={
+                gtin: gtin,
+                "app": "ch.autoidlabs.nutriscore_chrome_extension",
+                "error_description": "Nutri-Score seems wrong. Please check",
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "https://eatfit-service.foodcoa.ch/product/report/",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data2),
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                    "cache-control": "no-cache",
+                    "Postman-Token": "010c1d65-2b2e-4558-8431-1c6ef39c46ba"},
+                success: function (message) {
+                    console.log(message);
+                },
+                error: function (message) {
+                    $("#request-process-patent").html("failed！");
+                }
+            });
+        }
+
+
+
+
+
         //function to return nutrisocre 
 
         if (group == "A") {
             function show(_nutri_score_final) {
                 nutriScore = _nutri_score_final;
                 if (nutriScore == null) {
-                    console.log("Here you go")
+                    console.log("Nutriscore from API is Null")
                     nutriScore = getScoreLocal();
                 }
                 console.log(nutriScore);
