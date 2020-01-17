@@ -136,9 +136,11 @@ function main_page_score(){
 			
 
 	
+		    discount_img[i].childNodes[1].remove();
+		    discount_img[i].childNodes[0].remove();
+			
 		    discount_img[i].append(discountHolder[i]);
-
-		    discount_img[i].append(discount_Label[i]);
+		    discountHolder[i].append(discount_Label[i]);
 
 		   
 

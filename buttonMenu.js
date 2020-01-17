@@ -2,7 +2,15 @@
 console.log("Chrome extension is working!");
 
 var group = localStorage.getItem("GroupName");
-console.log ('group at refresh'+ group)
+if (group==null) {
+	localStorage.setItem("GroupName", "A");
+	group = localStorage.getItem("GroupName");
+}
+console.log ('group at refresh'+ group);
+var userArray = ['zwrh0093@guRY7221.com'], 
+    password = 'zwrh0093guRY7221',
+    localStorageUserArray;
+	
 
 // Admin Section. Activated on extension button click.
 chrome.runtime.onMessage.addListener(
@@ -52,16 +60,8 @@ chrome.runtime.onMessage.addListener(
         var Answer4 = document.createElement("SELECT");
         var closer2 = document.createElement("INPUT");
 
-         //variables for Outro Survey Page.
 
-         var div4 = document.createElement("DIV");
-        var form3 = document.createElement("FORM");
-        var title3 = document.createElement("TEXT");
-        var explanation3 = document.createElement("TEXT");
-        var explanation4 = document.createElement("TEXT");
-        var closer3 = document.createElement("INPUT");
-
-         //variables for study group selection. 
+        //variables for study group selection. 
         var country_germany = document.createElement("INPUT");
         var country_ch = document.createElement("INPUT");
         
@@ -213,7 +213,7 @@ chrome.runtime.onMessage.addListener(
 						$("#country_germany").on("click", function() {
 
 							var Country = "Germany";
-                            localStorage.setItem("CountryName", Country);
+							localStorage.setItem("CountryName", Country);
 						    console.log(" Country Selected is  : " + Country );
 						});
 
@@ -285,23 +285,89 @@ chrome.runtime.onMessage.addListener(
         });
         
         $("#Start").on("click", function() {
+			
+			var url_register="https://login.migros.ch/register";
+			var url_login="https://login.migros.ch/login";
+			//var url_login="https://login.migros.ch/account?siteName=migros-ch";
+			//var url_login="https://login.migros.ch/account";
+			
+			function randomGender(){
+				genderRandom=Math.floor(Math.random() * 2);
+				if(genderRandom) return("M");
+				else return("F");
+			}
+			function randomChar(){
+				while (1) {
+					x=Math.floor(Math.random() * 58) + 65;
+					if (x < 91 || x > 96) break;
+				}
+				return(String.fromCharCode(x));
+			}
+			function randomInt(){
+				xInt=Math.floor(Math.random() * 10);
+				return(xInt.toString());
+			}
+			function userName(){
+				var i=1;
+				var strChar="", strInt="";
+				while (i<5) {
+					i++;
+					strChar=strChar+randomChar();
+					strInt=strInt+randomInt();
+				} 
+				return strChar+strInt;
+			}
+			
+			var _csrfMigros="N2GSCa53T8uINA-1GeiD0A"; 
+			var gender=randomGender();
+			var userFirstName=userName();
+			var userLastName=userName();
+			var email=userFirstName+"@"+userLastName+".com";
+			var pass=userFirstName+userLastName;
+			
+			console.log(gender+'\n'+email+'\n'+pass);
+			
+			localStorageUserArray = JSON.parse(localStorage.getItem('userNames'));
+			if (localStorageUserArray==null){
+				localStorage.setItem('userNames', JSON.stringify(['zwrh0093@guRY7221.com']));
+				localStorageUserArray = JSON.parse(localStorage.getItem('userNames'));
+			}
+			console.log(localStorageUserArray);
+			localStorageUserArray.push(email);
+			localStorage.setItem('userNames', JSON.stringify(localStorageUserArray));
 
-
-            $.ajax({
-                type: "POST",
-                url: 'https://login.migros.ch/register', // script to do the actual authentication, set session etc.
-                data: {
-                    username: 'user1', // get element value of username here
-                    password: 'password1', // get element value of password here
+			console.log(localStorageUserArray);
+			
+			var dataRegister = {
+				'_csrf': _csrfMigros,
+				'gender' : gender,
+				 'firstname' : userFirstName,
+				 'lastname' : userLastName,
+				 'email' : email,
+				 'password':  pass,
+				 'legalDocuments[PRIVACY_STATEMENT].accepted' : 1
+			};
+			var dataLogin = {
+				'_csrf': _csrfMigros,
+				 'username' : email,
+				 'password':  pass
+			};			
+			$.ajax({
+                url: url_register,
+                type: "GET",
+                //dataType: "json",
+                //cache: true,
+                async: false,
+				data: dataRegister,
+                success: function(response) {
+                   // console.log("Success", response);
+                   console.log("Success");
                 },
-                success: function(data) {
-                    // process result
-                },
+                //function get error if the json does not work
+                error: function(textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
             });
-
-
-
-
 
             var user_country = localStorage.getItem("CountryName");
             
@@ -347,7 +413,7 @@ chrome.runtime.onMessage.addListener(
         title2.style.top = "7%";
         title2.style.left = "32%";
         
-        explanation2.textContent = "Liebe Teilnehmerin, lieber Teilnehmer,                                                                                                  vielen Dank, dass Sie an dieser Studie teilnehmen. Unser Ziel ist es zu untersuchen, wie Menschen Lebensmittel online einkaufen. Zu diesem Zweck werden Sie später eine Einkaufsliste mit verschiedenen Produkten erhalten, die Sie in einem Online-Supermarkt bestellen sollen. Die Studie besteht aus insgesamt drei Teilen. Im ersten Teil werden Sie gebeten einen kurzen Fragebogen zu Ihrer Person und Ihrer Lebenssituation auszufüllen. Darauf folgt die Online-Shopping Aufgabe. Im letzten Teil folgt wieder ein Fragebogen zu Ihrer Person. Für Ihre Teilnahme an der Studie erhalten Sie eine Vergütung in Höhe von xx€/CHF. Eine zusätzliche Vergütung erhalten Sie basierend auf den Entscheidungen, die Sie im Verlauf der Studie treffen. Hierzu werden zwei zufällige Produkte, die Sie im Verlauf der Studie in Ihren Warenkorb gelegt haben, ausgewählt. Sie erhalten entweder diese Produkte am Ende der Studie als zusätzliche Vergütung oder den monetären Gegenwert der Produkte. Wir werden all Ihre Antworten vertraulich und anonym erfassen. Anhand Ihrer Antworten werden keine Rückschlüsse auf Ihre Person möglich sein.                                                                Falls Sie ihre Daten nach Beendigung der Studie zurückziehen möchten, kontaktieren Sie bitte: ID Labs ETH/HSG, Weinbergstrasse 56, 8092 Zürich, team@autoidlabs.ch.  Nochmals vielen Dank! Klaus Fuchs (Projektleitung), Prof. Dr. Verena Tiefenbeck, Jie Lian, Leonard Michels, Mehdi Bouguerra ";
+        explanation2.textContent = "Liebe Teilnehmerin, lieber Teilnehmer, vielen Dank, dass Sie an dieser Studie teilnehmen. Unser Ziel ist es zu untersuchen, wie Menschen Lebensmittel online einkaufen. Zu diesem Zweck werden Sie später eine Einkaufsliste mit verschiedenen Produkten erhalten, die Sie in einem Online-Supermarkt bestellen sollen. Die Studie besteht aus insgesamt drei Teilen. Im ersten Teil werden Sie gebeten einen kurzen Fragebogen zu Ihrer Person und Ihrer Lebenssituation auszufüllen. Darauf folgt die Online-Shopping Aufgabe. Im letzten Teil folgt wieder ein Fragebogen zu Ihrer Person. Für Ihre Teilnahme an der Studie erhalten Sie eine Vergütung in Höhe von xx€/CHF. Eine zusätzliche Vergütung erhalten Sie basierend auf den Entscheidungen, die Sie im Verlauf der Studie treffen. Hierzu werden zwei zufällige Produkte, die Sie im Verlauf der Studie in Ihren Warenkorb gelegt haben, ausgewählt. Sie erhalten entweder diese Produkte am Ende der Studie als zusätzliche Vergütung oder den monetären Gegenwert der Produkte. Wir werden all Ihre Antworten vertraulich und anonym erfassen. Anhand Ihrer Antworten werden keine Rückschlüsse auf Ihre Person möglich sein. Falls Sie ihre Daten nach Beendigung der Studie zurückziehen möchten, kontaktieren Sie bitte: ID Labs ETH/HSG, Weinbergstrasse 56, 8092 Zürich, team@autoidlabs.ch.  Nochmals vielen Dank! Klaus Fuchs (Projektleitung), Prof. Dr. Verena Tiefenbeck, Jie Lian, Leonard Michels, Mehdi Bouguerra ";
         explanation2.style.fontSize = "15px";
         explanation2.style.position = "absolute";
         explanation2.style.top = "12%"
@@ -484,171 +550,16 @@ chrome.runtime.onMessage.addListener(
         localStorage.setItem("ValueAnswer1", ValueAnswer1);
         localStorage.setItem("ValueAnswer2", ValueAnswer2);
         localStorage.setItem("ValueAnswer3", ValueAnswer3);
-        localStorage.setItem("ValueAnswer4", ValueAnswer4);
+        localStorage.setItem("ValueAnswer1", ValueAnswer4);
+
+        
+
+
+
 
             $(document.body).children("#overlay2").remove();
-
-            var userid=document.getElementById("userid");
-            var group=localStorage.getItem("GroupName");
-            var country=localStorage.getItem("CountryName");
-            var age =document.getElementById("ValueAnswer1");
-            var gender =document.getElementById("ValueAnswer2");
-            var education =document.getElementById("ValueAnswer3");
-            var incomes =document.getElementById("ValueAnswer4");
-            var data1={
-                userid: userid,
-                group:group,
-                country:country,
-                age:age,
-                gender: gender,
-                education: education,
-                incomes: incomes
-            };
-            $.ajax({
-                type: "POST",
-                url: "http://127.0.0.1:5000",// this will be changed
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(data1),
-                dataType: "json",
-                success: function (message) {
-                    console.log(message);
-                },
-                error: function (message) {
-                    $("#request-process-patent").html("failed！");
-                }
-            });
             
             
-        });
-
-      
-
-
-        });
-        
-        $("#Finish").on("click", function() {
-
-
-            $.ajax({
-                type: "POST",
-                url: 'https://login.migros.ch/register', // script to do the actual authentication, set session etc.
-                data: {
-                    username: 'user1', // get element value of username here
-                    password: 'password1', // get element value of password here
-                },
-                success: function(data) {
-                    // process result
-                },
-            });
-
-
-
-
-
-            var user_country = localStorage.getItem("CountryName");
-            
-            if ($("#overlay3").length == 0) {
-
-                
-                document.body.appendChild(div4);
-                div4.appendChild(form3);
-                div4.id = "overlay3";
-                form3.appendChild(title3);
-                form3.appendChild(explanation3);
-                form3.appendChild(explanation4);
-                form3.appendChild(closer3);
-
-
-        } else if ($("#overlay3").length > 0) {
-            console.log("The Outro Survey is already open");
-        }
-        div4.id = "overlay2";
-        div4.style.position = 'fixed';
-        div4.style.top = '20%';
-        div4.style.left = '5%';
-        div4.style.width = '88%';   
-        div4.style.height = '75%';
-        div4.style.zIndex = '100';
-        div4.style.opacity = '0.95';
-        div4.style.backgroundColor = 'white';
-        div4.style.border = 'solid';
-        div4.style.borderWidth = '5px';
-        div4.style.borderRadius = '20px';
-        div4.style.borderColor = 'lightgreen';
-        
-        title3.textContent = "Thank you for taking part in this study";
-        title3.style.fontSize = "25px";
-        title3.style.position = "absolute";
-        title3.style.top = "5%";
-        title3.style.left = "35%";
-        
-        explanation3.textContent = "Dear participant, after having finished the shopping for the menu, we would like to know a little bit more about yourself and your shopping experience. The following questionnaire concerns your shopping experience, your personal preferences and lifestyle. Please answer each question as accurately as possible. ";
-        explanation3.style.fontSize = "20px";
-        explanation3.style.position = "absolute";
-        explanation3.style.top = "15%"
-        explanation3.style.left = "5%";
-
-
-        closer3.id = "exitButtonSurvey2";
-        closer3.type = "button";
-        closer3.value = " Go to questionnaire";
-        closer3.style.position = "absolute";
-        closer3.style.top = "40%";
-        closer3.style.left = "45%"; 
-        
-        $("#exitButtonSurvey2").on("click", function() {
-
-            if (user_country=="Germany" && group=="A" ) {
-                treatmentgroup= "PQDET2"}
-            else if (user_country=="Germany" && group=="B" ) {
-               treatmentgroup= "PQDET"}
-            else if (user_country=="Germany" && group=="C" ) {
-                treatmentgroup= "PQDEC"}
-            else if (user_country=="Switzerland" && group=="A" ) {
-               treatmentgroup= "PQCHT2"}
-            else if (user_country=="Switzerland" && group=="B" ) {
-                treatmentgroup= "PQCHT"}
-            else if (user_country=="Switzerland" && group=="C" ) {
-                treatmentgroup= "PQCHC"}
-            else { treatmentgroup= "error";
-            console.log("Error treatment group");
-        }
-        
-           
-            $(document.body).children("#overlay3").remove();
-
-            var userid=document.getElementById("userid");
-            var group=localStorage.getItem("GroupName");
-            var country=localStorage.getItem("CountryName");
-            var age =document.getElementById("ValueAnswer1");
-            var gender =document.getElementById("ValueAnswer2");
-            var education =document.getElementById("ValueAnswer3");
-            var incomes =document.getElementById("ValueAnswer4");
-            var data1={
-                userid: userid,
-                group:group,
-                country:country,
-                age:age,
-                gender: gender,
-                education: education,
-                incomes: incomes
-            };
-            $.ajax({
-                type: "POST",
-                url: "http://127.0.0.1:5000",// this will be changed
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(data1),
-                dataType: "json",
-                success: function (message) {
-                    console.log(message);
-                },
-                error: function (message) {
-                    $("#request-process-patent").html("failed！");
-                }
-            });
-            
-            window.open("https://www.soscisurvey.de/NUS_1/?r={"+userid+"}&q={"+treatmentgroup+"}");
-
         });
 
       

@@ -1,4 +1,6 @@
 console.log("Background running!");
+localStorage.setItem('userNames', JSON.stringify("zwrh0093@guRY7221.com"));			
+localStorage.setItem("GroupName", "A");
 
 chrome.browserAction.onClicked.addListener(buttonClicked)
 
