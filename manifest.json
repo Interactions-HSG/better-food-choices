@@ -1,24 +1,64 @@
 {
     "manifest_version": 2,
     "name": "Better Food Choices",
-    "version": "2.0",
-    "description": "Calculates the Nutri-Score and provide better food choices with the help of nutritional information on PdPs",
-    "permissions": ["tabs", "activeTab", "storage", "<all_urls>"],
+    "version": "6.1",
+    "description": "Calculates the Nutri-Score and introduces a price incentive for an experiemental study",
+    "permissions": ["tabs", "activeTab", "storage", "<all_urls>", "webRequestBlocking", "unlimitedStorage"],
     "icons": {
-        "128": "ns_128.png" },
+        "128": "images/ns_128.png" },
     "content_scripts": [
-        {
+        {            
             "matches": ["*://*.migros.ch/*"],
-            "js": ["jquery.min.js", "buttonMenu.js","OverviewPage.js","displayNutriscoreSingle.js","convertCurrency.js","removeContent.js"]
-        }
+            "exclude_matches": ["*://*.migros.ch/sortiment/*"],
+            "js": [
+                "jquery.min.js",
+                "js/Nutriscore.js",
+                "js/Item.js", 
+                "js/buttonMenu.js",
+                "js/SingleView.js",
+                "js/removeContent.js"
+            ]
+        },
+        {
+            "matches": ["*://*.migros.ch/sortiment/*"],
+            "css": [
+                "css/style.css"
+            ],
+            "js": [
+                "jquery.min.js",
+                "js/Nutriscore.js",
+                "js/Item.js", 
+                "js/buttonMenu.js",
+                "js/ListView.js", 
+                "js/removeContent.js"
+            ]
+        }   
     ],
     "background": {
-        "scripts": ["background.js"],
+        "scripts": [
+            "papaparse.min.js",
+            "jquery.min.js",
+            "background.js"
+        ],
         "persistent": false
     },
-    "web_accessible_resources": ["nsA.png", "nsB.png", "nsC.png", "nsD.png", "nsE.png", "nsV.png", "A.png", "B.png", "C.png", "D.png", "E.png", "V.png", "https://www.googletagmanager.com/gtm.js?id=GTM-9D7X"],
+    "web_accessible_resources": [
+        "images/nsA.png", 
+        "images/nsB.png", 
+        "images/nsC.png", 
+        "images/nsD.png", 
+        "images/nsE.png", 
+        "images/nsV.png", 
+        "images/A.png", 
+        "images/B.png", 
+        "images/C.png", 
+        "images/D.png", 
+        "images/E.png", 
+        "images/V.png", 
+        "https://www.googletagmanager.com/gtm.js?id=GTM-9D7X"],
     "browser_action": {
-        "default_icon": "ns_32.png",
+        "default_icon": "images/ns_32.png",
         "default_title": "Look for product alternatives!"
     }
 }
+
