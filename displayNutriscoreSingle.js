@@ -9,6 +9,7 @@ if ($("aside.sidebar").length) {
 }
 console.log(page_type);
 //var page_type=localStorage.getItem("page_type");
+//test change 2222
 
 if (page_type === "migros.singleproduct") {
     // Looking for unique identifier(GTIN).
