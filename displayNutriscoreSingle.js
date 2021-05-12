@@ -1,5 +1,7 @@
 // This module customizes the NutriScore on a SINGLE PRODUCT page to the user's location. 
 // Check current pagetype
+// yes test
+
 var page_type="migros.productoverview";
 if ($("ul.mui-js-product-list").length) {
 	page_type="migros.productoverview";
